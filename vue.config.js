@@ -35,6 +35,15 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    // 配置开发的接口代理
+    proxy: {
+      // 以 key: value 的形式指定
+      // 辨认api接口的模式: 转发的目的地
+      '/api': {
+        target: 'http://ihrm-java.itheima.net',
+        changeOrigin: true
+      }
     }
   },
   configureWebpack: {

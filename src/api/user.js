@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: 'http://ihrm-java.itheima.net/api/sys/login',
+    url: 'http://localhost:8888/api/sys/login',
     method: 'post',
     data
   })
