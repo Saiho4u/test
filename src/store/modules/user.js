@@ -22,8 +22,8 @@ const actions = {
     // 页面再调用这个 action 即可
     const res = await login(data)
     console.log('这里是 action 发出的请求')
-    console.log(res.data.data)
-    store.commit('setToken', res.data.data)
+    console.log(res)
+    store.commit('setToken', res)
   }
 }
 
