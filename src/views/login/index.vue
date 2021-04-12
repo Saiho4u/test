@@ -58,7 +58,7 @@
 <script>
 import { validMobile } from '@/utils/validate'
 
-import { login } from '@/api/user'
+// import { login } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -138,7 +138,8 @@ export default {
       })
     },
     handleLogin() {
-      login(this.loginForm)
+      // login(this.loginForm)
+      this.$store.dispatch('user/login', this.loginForm)
       // this.$refs.loginForm.validate(valid => {
       //   if (valid) {
       //     this.loading = true
