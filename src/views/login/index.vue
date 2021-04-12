@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+import { validMobile } from '@/utils/validate'
 
 export default {
   name: 'Login',
@@ -81,8 +81,8 @@ export default {
       // rule 规则对象本身 value 当前输入值 callback 放行回调
       // 在这里可以任意执行校验逻辑
       // 然后做出后续处理即可
-      const pattern = /^1[3-9][0-9]{9}$/
-      if (pattern.test(value)) {
+
+      if (validMobile(value)) {
         callback()
       } else {
         callback(new Error('请输入合法的手机号'))
