@@ -1,11 +1,13 @@
 import { login } from '@/api/user'
+import { getToken, setToken } from '@/utils/auth'
 const state = {
-  token: null
+  token: getToken()
 }
 const mutations = {
   // 设置 token
   setToken(state, data) {
     state.token = data
+    setToken(data)
   },
   // 清除 token
   removeToken(state) {
