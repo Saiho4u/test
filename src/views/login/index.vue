@@ -75,6 +75,20 @@ export default {
     //     callback()
     //   }
     // }
+    const validateMobile = (rule, value, callback) => {
+      // 每当触发校验的时候, 这个函数都会执行
+      // 同时饿了么会在执行时传入三个参数
+      // rule 规则对象本身 value 当前输入值 callback 放行回调
+      // 在这里可以任意执行校验逻辑
+      // 然后做出后续处理即可
+      const pattern = /^1[3-9][0-9]{9}$/
+      if (pattern.test(value)) {
+        callback()
+      } else {
+        callback(new Error('请输入合法的手机号'))
+      }
+    }
+
     return {
       loginForm: {
         mobile: 'admin',
@@ -87,7 +101,10 @@ export default {
       loginRules: {
         mobile: [
           { required: true, trigger: 'blur', message: '该数据不能为空' },
-          { pattern: /^1[3-9][0-9]{9}$/, trigger: 'blur', message: '请输入合法手机号' }
+          // { pattern: /^1[3-9][0-9]{9}$/, trigger: 'blur', message: '请输入合法手机号' }
+          // 除了编写规则以外, 还可以用一个函数进行校验, 如果是函数, 除了触发条件以外, 错误信息和校验逻辑
+          // 都可以写在函数内, 非常灵活
+          { trigger: 'blur', validator: validateMobile }
         ],
         password: [
           { required: true, trigger: 'blur', message: '该数据不能为空' },
