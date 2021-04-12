@@ -2,7 +2,8 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: 'http://localhost:8888/api/sys/login',
+    // url: 'http://ihrm-java.itheima.net/api/sys/login',
+    url: '/sys/login',
     method: 'post',
     data
   })
@@ -10,7 +11,7 @@ export function login(data) {
 
 export function getInfo(token) {
   return request({
-    url: '/vue-admin-template/user/info',
+    url: 'api/vue-admin-template/user/info',
     method: 'get',
     params: { token }
   })
