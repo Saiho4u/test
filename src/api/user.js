@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: 'http://ihrm-java.itheima.net/api/sys/login',
     method: 'post',
     data
   })
