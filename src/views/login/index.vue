@@ -9,15 +9,15 @@
         </h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="mobile">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="mobile"
+          v-model="loginForm.mobile"
+          placeholder="请输入手机号"
+          name="mobile"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -33,7 +33,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -61,28 +61,38 @@ import { validUsername } from '@/utils/validate'
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
+    // const validateUsername = (rule, value, callback) => {
+    //   if (!validUsername(value)) {
+    //     callback(new Error('Please enter the correct user name'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // const validatePassword = (rule, value, callback) => {
+    //   if (value.length < 6) {
+    //     callback(new Error('The password can not be less than 6 digits'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       loginForm: {
-        username: 'admin',
+        mobile: 'admin',
         password: '111111'
       },
+      // loginRules: {
+      //   mobile: [{ required: true, trigger: 'blur', validator: validateUsername }],
+      //   password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      // },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        mobile: [
+          { required: true, trigger: 'blur', message: '该数据不能为空' },
+          { pattern: /^1[3-9][0-9]{9}$/, trigger: 'blur', message: '请输入合法手机号' }
+        ],
+        password: [
+          { required: true, trigger: 'blur', message: '该数据不能为空' },
+          { min: 6, max: 16, trigger: 'blur', message: '密码在6到16位之间' }
+        ]
       },
       loading: false,
       passwordType: 'password',
