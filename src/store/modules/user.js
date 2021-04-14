@@ -1,5 +1,5 @@
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 const state = {
   token: getToken(),
   userInfo: {}
@@ -32,6 +32,8 @@ const actions = {
     console.log('这里是 action 发出的请求')
     console.log(res)
     store.commit('setToken', res)
+    // 为了校验 token 是否超时, 需要将当前登录的时间记录下来
+    setTimeStamp()
   },
   async getUserInfo(store) {
     // 1. 发请求
