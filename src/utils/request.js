@@ -6,6 +6,21 @@ import { Message } from 'element-ui'
 
 import store from '@/store'
 
+import router from '@/router'
+
+import { getTimeStamp } from '@/utils/auth'
+
+const timeoutDuration = 5000
+
+function checkTimeout() {
+  // 1. 拿出之前记录的时间
+  const oldTime = getTimeStamp()
+  // 2. 拿出现在的时间 相减 = 经过的时候
+  const currentTime = Date.now()
+  // 3. 定义一个超时范围, 如果超过则是失效
+  return currentTime - oldTime >= timeoutDuration
+}
+
 // 创建公共请求实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -20,7 +35,21 @@ service.interceptors.request.use(
     // token 的固定格式
     // 当前我们用的校验标准叫做 jwt bearer token
     if (store.getters.token) {
-      config.headers.Authorization = 'Bearer ' + store.getters.token
+      // 发现有 token 在注入之前
+      // 应该先校验时间是否超时
+      if (checkTimeout()) {
+        // 已经超时的操作
+        // 1. 提示错误(还是会走响应拦截, 所以已经弹过窗了)
+        // Message.error('token 已超时')
+        // 2. 执行退出 action 清理数据
+        store.dispatch('user/logout')
+        // 3. 跳转页面
+        router.push('/login')
+        // 4. 停止当前的请求
+        return Promise.reject(new Error('token 已超时'))
+      } else {
+        config.headers.Authorization = 'Bearer ' + store.getters.token
+      }
     }
     // 必须放行
     return config
