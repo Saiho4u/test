@@ -26,4 +26,23 @@ router.beforeEach((to, from, next) => {
       next('/login')
     }
   }
+  // 下面是一种将所有情况拆开的写法, 可以参考
+  // const token = store.getters.token
+  // const url = to.path
+  // // 1. 有 token 去登录页 => 转到首页
+  // if (token && url === '/login') {
+  //   next('/')
+  // }
+  // // 2. 有 token 不是去登录页 => 放行
+  // if (token && url !== '/login') {
+  //   next()
+  // }
+  // // 3. 没有 token 在白名单 => 放行
+  // if (!token && whiteList.includes(url)) {
+  //   next()
+  // }
+  // // 4. 没有 token 不在白名单 => 转到登录页
+  // if (!token && !whiteList.includes(url)) {
+  //   next('/login')
+  // }
 })
