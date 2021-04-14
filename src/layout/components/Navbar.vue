@@ -55,8 +55,12 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      // await this.$store.dispatch('user/logout')
+      // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      // 跳转到登录页, 是核心操作
+      // 但是跳出去之前, 需要清理数据
+      this.$store.dispatch('user/logout')
+      this.$router.push('/login')
     }
   }
 }

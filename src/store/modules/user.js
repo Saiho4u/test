@@ -1,5 +1,5 @@
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
-import { getToken, setToken } from '@/utils/auth'
+import { getToken, setToken, removeToken } from '@/utils/auth'
 const state = {
   token: getToken(),
   userInfo: {}
@@ -13,6 +13,7 @@ const mutations = {
   // 清除 token
   removeToken(state) {
     state.token = null
+    removeToken()
   },
   setUserInfo(state, data) {
     state.userInfo = { ...data }
@@ -48,6 +49,10 @@ const actions = {
     store.commit('setUserInfo', data)
 
     // return res
+  },
+  logout(store) {
+    store.commit('removeToken')
+    store.commit('removeUserInfo')
   }
 }
 
