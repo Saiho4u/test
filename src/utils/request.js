@@ -4,6 +4,8 @@ import axios from 'axios'
 // 引入饿了么弹窗插件
 import { Message } from 'element-ui'
 
+import store from '@/store'
+
 // 创建公共请求实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -12,7 +14,21 @@ const service = axios.create({
 })
 
 // 请求拦截器
-service.interceptors.request.use()
+service.interceptors.request.use(
+  config => {
+    // 在请求当中添加 token (如果有)
+    // token 的固定格式
+    // 当前我们用的校验标准叫做 jwt bearer token
+    if (store.getters.token) {
+      config.headers.Authorization = 'Bearer ' + store.getters.token
+    }
+    // 必须放行
+    return config
+  },
+  err => {
+    return Promise.reject(err)
+  }
+)
 
 // 响应拦截器
 // 响应拦截器当中, 可以接受两个参数, 两个都是函数
