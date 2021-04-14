@@ -1,7 +1,8 @@
-import { login } from '@/api/user'
+import { login, getUserInfo } from '@/api/user'
 import { getToken, setToken } from '@/utils/auth'
 const state = {
-  token: getToken()
+  token: getToken(),
+  userInfo: {}
 }
 const mutations = {
   // 设置 token
@@ -12,6 +13,12 @@ const mutations = {
   // 清除 token
   removeToken(state) {
     state.token = null
+  },
+  setUserInfo(state, data) {
+    state.userInfo = { ...data }
+  },
+  removeUserInfo(state) {
+    state.userInfo = {}
   }
 }
 const actions = {
@@ -24,6 +31,15 @@ const actions = {
     console.log('这里是 action 发出的请求')
     console.log(res)
     store.commit('setToken', res)
+  },
+  async getUserInfo(store) {
+    // 1. 发请求
+    const res = await getUserInfo()
+    // console.log(res)
+    // 2. 调用 Mutations 存在 state 里面
+    store.commit('setUserInfo', res)
+
+    // return res
   }
 }
 
