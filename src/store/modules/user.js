@@ -1,4 +1,4 @@
-import { login, getUserInfo } from '@/api/user'
+import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { getToken, setToken } from '@/utils/auth'
 const state = {
   token: getToken(),
@@ -35,9 +35,17 @@ const actions = {
   async getUserInfo(store) {
     // 1. 发请求
     const res = await getUserInfo()
+    // 这些数据不够完善, 所以用这个结果的 userId
+    // 继续发请求获取更加详细的用户资料
+    const detail = await getUserDetailById(res.userId)
+
+    const data = {
+      ...res,
+      ...detail
+    }
     // console.log(res)
     // 2. 调用 Mutations 存在 state 里面
-    store.commit('setUserInfo', res)
+    store.commit('setUserInfo', data)
 
     // return res
   }
