@@ -4,7 +4,7 @@ import store from '@/store'
 
 const whiteList = ['/login', '/404']
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   // 是否有 token
   if (store.getters.token) {
     // 有 token
@@ -14,6 +14,18 @@ router.beforeEach((to, from, next) => {
       next('/')
     } else {
       // 不是
+      // 如果是有 token 又不是去登录页
+      // 那么就是进入正常的后台管理页面
+      // 无论是哪个页面, 其实都需要用户信息
+      // 就可以在这发起请求获取用户数据
+      console.log('这里是导航守卫获取用户资料,之后再进入页面')
+      // 这里还可以做判断, 如果是第一次进入,或者刷新页面
+      // 没有数据的情况下,再发请求, 如果是页面之间的跳转
+      // 之前已经有数据就不必再次发送了
+      if (!store.state.user.userInfo.userId) {
+        await store.dispatch('user/getUserInfo')
+      }
+
       next()
     }
   } else {
