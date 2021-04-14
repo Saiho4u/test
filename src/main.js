@@ -46,7 +46,12 @@ Vue.directive('imgerror', {
     // 1. 当前的 dom
     // 2. 当前指令的配置
     console.log(dom)
+    console.log(options)
     // 接下来只需要定义他的错误处理, 修改 src 即可
+    dom.onerror = function() {
+      // dom.src = 备用的图片地址
+      dom.src = options.value
+    }
   }
 })
 
