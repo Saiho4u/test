@@ -137,9 +137,10 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+    async handleLogin() {
       // login(this.loginForm)
-      this.$store.dispatch('user/login', this.loginForm)
+      await this.$store.dispatch('user/login', this.loginForm)
+      this.$router.push('/')
       // this.$refs.loginForm.validate(valid => {
       //   if (valid) {
       //     this.loading = true
