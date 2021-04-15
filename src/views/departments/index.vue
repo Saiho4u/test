@@ -23,6 +23,7 @@
 
 <script>
 import TreeTools from './components/tree-tools'
+import { getDepartments } from '@/api/departments'
 export default {
   components: {
     TreeTools
@@ -33,26 +34,20 @@ export default {
         name: '江苏传智播客教育科技股份有限公司',
         manager: '负责人'
       },
-      departs: [
-        {
-          name: '总裁办',
-          manager: '老王',
-          children: [
-            { name: '董事会', manager: '小王' }
-          ]
-        },
-        {
-          name: '行政部',
-          manager: '大王'
-        },
-        {
-          name: '人事部',
-          manager: '炸弹'
-        }
-      ],
+      departs: [],
       treeOption: {
         label: 'name'
       }
+    }
+  },
+  created() {
+    this.getDepartments()
+  },
+  methods: {
+    async getDepartments() {
+      const { depts } = await getDepartments()
+      // res.depts 就是我们想要的部门数组
+      this.departs = depts
     }
   }
 }
