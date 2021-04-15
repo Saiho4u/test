@@ -47,7 +47,22 @@ export default {
     async getDepartments() {
       const { depts } = await getDepartments()
       // res.depts 就是我们想要的部门数组
-      this.departs = depts
+      this.departs = this.listToTreeData(depts, '')
+    },
+    listToTreeData(list, pid) {
+      const res = []
+      list.forEach(item => {
+        if (item.pid === pid) {
+          // 递归开始
+          const children = this.listToTreeData(list, item.id)
+          if (children.length > 0) {
+            item.children = children
+          }
+          // 递归结束
+          res.push(item)
+        }
+      })
+      return res
     }
   }
 }
