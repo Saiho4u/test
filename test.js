@@ -1,8 +1,8 @@
 const oldData = [
-  { id: 1, name: '总裁办', pid: '' },
-  { id: 2, name: '财务部', pid: '' },
-  { id: 3, name: '税务管理部', pid: '2' },
-  { id: 4, name: '税务管理部广州分部', pid: '3' }
+  { id: '1', name: '总裁办', pid: '' },
+  { id: '2', name: '财务部', pid: '' },
+  { id: '3', name: '税务管理部', pid: '2' },
+  { id: '4', name: '税务管理部广州分部', pid: '3' }
 
 ]
 
@@ -24,9 +24,17 @@ function listToTreeData(list, pid) {
   // 遍历串串的 list, 如果pid等于需要的值,就放入 res 当中,最终返回
   list.forEach(item => {
     if (item.pid === pid) {
+      // 2. 如何递归
+      // 每当找到一个符合条件的部门,
+      // 继续递归使用当前函数, 以这个符合条件部门的id
+      // 作为下一层的 pid 继续查找
+      const children = listToTreeData(list, item.id)
+      if (children.length > 0) {
+        item.children = children
+      }
+
       res.push(item)
     }
   })
   return res
-  // 2. 如何递归
 }
