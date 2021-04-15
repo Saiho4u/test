@@ -32,7 +32,14 @@
         </el-row>
         <hr>
         <!-- 这里是树形组件显示的地方 -->
-        <el-tree :data="departs" :props="treeOption" :default-expand-all="true" />
+        <el-tree :data="departs" :props="treeOption" :default-expand-all="true">
+          <!-- 在这个属性组件的插槽里面可以控制每一个节点显示时的样式 -->
+          <!-- 每个插槽都有两个参数, 第一插槽名, 第二作用域插槽形参 -->
+          <template slot-scope="scope">
+            <!-- 每次渲染到的部门数据, 就会在 scope.data 里面储存 -->
+            {{ scope.data.name }}
+          </template>
+        </el-tree>
       </el-card>
     </div>
   </div>
