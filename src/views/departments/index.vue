@@ -24,6 +24,7 @@
 <script>
 import TreeTools from './components/tree-tools'
 import { getDepartments } from '@/api/departments'
+import { listToTreeData } from '@/utils'
 export default {
   components: {
     TreeTools
@@ -47,38 +48,7 @@ export default {
     async getDepartments() {
       const { depts } = await getDepartments()
       // res.depts 就是我们想要的部门数组
-      this.departs = this.listToTreeData(depts, '')
-    },
-    // listToTreeData(list, pid) {
-    //   const res = []
-    //   list.forEach(item => {
-    //     if (item.pid === pid) {
-    //       // 递归开始
-    //       const children = this.listToTreeData(list, item.id)
-    //       if (children.length > 0) {
-    //         item.children = children
-    //       }
-    //       // 递归结束
-    //       res.push(item)
-    //     }
-    //   })
-    //   return res
-    // }
-    listToTreeData(list, topLevelPid) {
-      list.forEach(item => {
-        // 1. 如果遍历到的这个 item 有上一层(pid !== '')
-        if (item.pid !== topLevelPid) {
-          // 2. 找出这个item的父部门,自己送上门
-          const parent = list.find(el => el.id === item.pid)
-          if (parent) {
-            parent.children = parent.children || []
-            parent.children.push(item)
-          }
-        }
-      })
-      // 做完以上的遍历, 每个有 pid 的子部门都已经存在于自己的父部门 children 里面
-      // 然后作为别人子部门的数据, 就不应该在第一层存在可以进行过滤
-      return list.filter(item => item.pid === topLevelPid)
+      this.departs = listToTreeData(depts, '')
     }
   }
 }
