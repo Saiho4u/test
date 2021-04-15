@@ -6,7 +6,8 @@
     style="height: 40px; width: 100%"
   >
     <el-col>
-      <span>{{ data.name }}</span>
+      <strong v-if="isRoot">{{ data.name }}</strong>
+      <span v-else>{{ data.name }}</span>
     </el-col>
     <el-col :span="4">
       <el-row type="flex" justify="end">
@@ -19,6 +20,8 @@
             <!-- 下拉菜单 -->
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>添加子部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isRoot">修改部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isRoot">删除部门</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
@@ -33,6 +36,10 @@ export default {
     data: {
       type: Object,
       required: true
+    },
+    isRoot: {
+      type: Boolean,
+      default: false
     }
   }
 }

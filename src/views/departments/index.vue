@@ -4,7 +4,7 @@
       <el-card class="tree-card">
         <!-- 用了一个行列布局 -->
         <!-- 实现了头部内容 -->
-        <TreeTools :data="company" />
+        <TreeTools :data="company" :is-root="true" />
         <hr>
         <!-- 这里是树形组件显示的地方 -->
         <el-tree :data="departs" :props="treeOption" :default-expand-all="true">
