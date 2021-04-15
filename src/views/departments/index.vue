@@ -4,7 +4,12 @@
       <el-card class="tree-card">
         <!-- 用了一个行列布局 -->
         <!-- 实现了头部内容 -->
-        <el-row type="flex" justify="space-between" align="middle" style="height: 40px">
+        <el-row
+          type="flex"
+          justify="space-between"
+          align="middle"
+          style="height: 40px"
+        >
           <el-col>
             <span>江苏传智播客教育科技股份有限公司</span>
           </el-col>
@@ -15,9 +20,7 @@
               <el-col>
                 <!-- 下拉菜单 element -->
                 <el-dropdown>
-                  <span>
-                    操作<i class="el-icon-arrow-down" />
-                  </span>
+                  <span> 操作<i class="el-icon-arrow-down" /> </span>
                   <!-- 下拉菜单 -->
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>添加子部门</el-dropdown-item>
@@ -27,6 +30,9 @@
             </el-row>
           </el-col>
         </el-row>
+        <hr>
+        <!-- 这里是树形组件显示的地方 -->
+        <el-tree :data="departs" :props="treeOption" :default-expand-all="true" />
       </el-card>
     </div>
   </div>
@@ -34,13 +40,24 @@
 
 <script>
 export default {
-
+  data() {
+    return {
+      departs: [
+        { name: '总裁办', children: [{ name: '董事会' }] },
+        { name: '行政部' },
+        { name: '人事部' }
+      ],
+      treeOption: {
+        label: 'name'
+      }
+    }
+  }
 }
 </script>
 
 <style scoped>
-.tree-card {
-  padding: 30px  140px;
-  font-size:14px;
-}
+  .tree-card {
+    padding: 30px 140px;
+    font-size: 14px;
+  }
 </style>
