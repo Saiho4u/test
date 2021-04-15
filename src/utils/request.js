@@ -82,6 +82,21 @@ service.interceptors.response.use(
   err => {
     // 这是网络层面的失败
     console.log('这是网络层面的失败')
+    // 这里的网络请求层面失败
+    // 可能性很多, 一般情况之前已经处理过
+    // 就是弹出提示, 并且 reject 即可
+    // 现在对其中一种特殊情况进行独立处理
+    console.dir(err)
+    if (err.response && err.response.data && err.response.data.code === 10002) {
+      // 由于这个请求错误拦截
+      // 错误的可能性很多, 有可能连 response 都没有
+      // 比较严谨的写法, 是需要先判断之前的数据是否存在
+      // 这里就是 token 问题
+      // 需要删除资料
+      store.dispatch('user/logout')
+      // 跳转页面
+      router.push('/login')
+    }
     // 这里应该弹出错误提示
     Message.error(err.message)
     // 拒绝掉当前的请求 promise
