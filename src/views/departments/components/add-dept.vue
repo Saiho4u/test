@@ -56,6 +56,14 @@ export default {
 
       isRepeat ? callback(new Error('同一部门下不能重名')) : callback()
     }
+    const checkRepeatCode = async(rule, value, callback) => {
+      // 1. 获取全部的部门列表
+      const { depts } = await getDepartments()
+      // 2. 只要任意一个 code 相同, 就应该报错
+      const isRepeat = depts.some(item => item.code === value)
+
+      isRepeat ? callback(new Error('code 必须唯一')) : callback()
+    }
     return {
       formData: {
         name: '',
@@ -72,7 +80,8 @@ export default {
         ],
         code: [
           { required: true, message: '数据不能为空', trigger: 'blur' },
-          { max: 50, message: '长度不能超过 50', trigger: 'blur' }
+          { max: 50, message: '长度不能超过 50', trigger: 'blur' },
+          { trigger: 'blur', validator: checkRepeatCode }
         ],
         manager: [
           { required: true, message: '数据不能为空', trigger: 'blur' }
