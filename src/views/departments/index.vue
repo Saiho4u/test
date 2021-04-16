@@ -4,7 +4,7 @@
       <el-card class="tree-card">
         <!-- 用了一个行列布局 -->
         <!-- 实现了头部内容 -->
-        <TreeTools :data="company" :is-root="true" />
+        <TreeTools :data="company" :is-root="true" @addDepartments="addDepartments" />
         <hr>
         <!-- 这里是树形组件显示的地方 -->
         <el-tree :data="departs" :props="treeOption" :default-expand-all="true">
@@ -37,7 +37,8 @@ export default {
     return {
       company: {
         name: '江苏传智播客教育科技股份有限公司',
-        manager: '负责人'
+        manager: '负责人',
+        id: ''
       },
       departs: [],
       treeOption: {
