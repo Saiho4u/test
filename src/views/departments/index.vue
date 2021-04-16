@@ -13,21 +13,25 @@
           <template slot-scope="scope">
             <!-- 每次渲染到的部门数据, 就会在 scope.data 里面储存 -->
             <!-- {{ scope.data.name }} -->
-            <TreeTools :data="scope.data" @delDepartments="getDepartments" />
+            <TreeTools :data="scope.data" @delDepartments="getDepartments" @addDepartments="addDepartments" />
           </template>
         </el-tree>
       </el-card>
+
+      <AddDept :show-dialog="showDialog" />
     </div>
   </div>
 </template>
 
 <script>
 import TreeTools from './components/tree-tools'
+import AddDept from './components/add-dept'
 import { getDepartments } from '@/api/departments'
 import { listToTreeData } from '@/utils'
 export default {
   components: {
-    TreeTools
+    TreeTools,
+    AddDept
   },
   data() {
     return {
@@ -38,7 +42,8 @@ export default {
       departs: [],
       treeOption: {
         label: 'name'
-      }
+      },
+      showDialog: false
     }
   },
   created() {
@@ -49,6 +54,9 @@ export default {
       const { depts } = await getDepartments()
       // res.depts 就是我们想要的部门数组
       this.departs = listToTreeData(depts, '')
+    },
+    addDepartments() {
+      this.showDialog = true
     }
   }
 }
