@@ -123,6 +123,9 @@ export default {
       // 通知页面更新数据
       this.$emit('addDepartments')
       // 关闭弹窗
+      // this.showDialog = false
+      // 不要再当前的子组件修改父组件传入的 prop
+      this.$emit('update:showDialog', false)
     }
   }
 }

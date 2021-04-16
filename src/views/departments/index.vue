@@ -18,7 +18,7 @@
         </el-tree>
       </el-card>
 
-      <AddDept :show-dialog="showDialog" :node="node" @addDepartments="getDepartments" />
+      <AddDept :show-dialog.sync="showDialog" :node="node" @addDepartments="getDepartments" />
     </div>
   </div>
 </template>
