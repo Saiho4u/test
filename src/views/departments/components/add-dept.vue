@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { getDepartments, addDepartments, getDeptDetailById } from '@/api/departments'
+import { getDepartments, addDepartments, getDeptDetailById, updateDepartments } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 
 export default {
@@ -122,7 +122,15 @@ export default {
       // 校验
       await this.$refs.addDeptForm.validate()
       // 发请求
-      await addDepartments({ ...this.formData, pid: this.node.id })
+      // 需要根据当前状态
+      // 决定是编辑还是新增
+      if (this.formData.id) {
+        // 编辑
+        await updateDepartments(this.formData)
+      } else {
+        // 新增
+        await addDepartments({ ...this.formData, pid: this.node.id })
+      }
       // 弹出提示
       this.$message.success('操作成功')
       // 通知页面更新数据
