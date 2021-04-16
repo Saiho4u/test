@@ -56,21 +56,46 @@ export default {
       // 如果相同父部门下有重名, 就报错
       // 1. 所有部门列表
       const { depts } = await getDepartments()
-      // 2. 当前选中部门的id
-      const pid = this.node.id
-      // 3. 通过筛选就能够得出当前的所有同级
-      // 4. 同级之间不能 重复即可
-      const isRepeat = depts
-        .filter(item => item.pid === pid)
-        .some(item => item.name === value)
+      // 之前是只管新增, 现在有编辑
+      // 编辑和新增的区别在于
+      // 1. 名字重名需要把自己排除在外
+      // 2. 查找同级时, 父部门不再是自己而是上一层 不是 node.id 而是 node.pid
+      let isRepeat = false
+
+      if (this.formData.id) {
+        // 编辑
+        const pid = this.node.pid
+
+        isRepeat = depts
+          .filter(item => item.pid === pid && item.id !== this.node.id)
+          .some(item => item.name === value)
+      } else {
+        // 新增
+        // 2. 当前选中部门的id
+        const pid = this.node.id
+        // 3. 通过筛选就能够得出当前的所有同级
+        // 4. 同级之间不能 重复即可
+        isRepeat = depts
+          .filter(item => item.pid === pid)
+          .some(item => item.name === value)
+      }
 
       isRepeat ? callback(new Error('同一部门下不能重名')) : callback()
     }
     const checkRepeatCode = async(rule, value, callback) => {
       // 1. 获取全部的部门列表
       const { depts } = await getDepartments()
+      let isRepeat = false
+
+      if (this.formData.id) {
+        // 编辑
+        // 必须将自己排除在外
+        isRepeat = depts.some(item => item.code === value && item.id !== this.node.id)
+      } else {
+        // 新增
       // 2. 只要任意一个 code 相同, 就应该报错
-      const isRepeat = depts.some(item => item.code === value)
+        isRepeat = depts.some(item => item.code === value)
+      }
 
       isRepeat ? callback(new Error('code 必须唯一')) : callback()
     }
