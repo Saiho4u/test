@@ -13,7 +13,7 @@
           <template slot-scope="scope">
             <!-- 每次渲染到的部门数据, 就会在 scope.data 里面储存 -->
             <!-- {{ scope.data.name }} -->
-            <TreeTools :data="scope.data" />
+            <TreeTools :data="scope.data" @delDepartments="getDepartments" />
           </template>
         </el-tree>
       </el-card>
