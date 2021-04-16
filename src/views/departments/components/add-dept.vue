@@ -29,7 +29,7 @@
     <el-row slot="footer" type="flex" justify="center">
       <!-- 列被分为24 -->
       <el-col :span="6">
-        <el-button type="primary" size="small">确定</el-button>
+        <el-button type="primary" size="small" @click="btnOK">确定</el-button>
         <el-button size="small">取消</el-button>
       </el-col>
     </el-row>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { getDepartments } from '@/api/departments'
+import { getDepartments, addDepartments } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 
 export default {
@@ -112,6 +112,17 @@ export default {
       setTimeout(() => {
         this.$refs.addDeptForm.validateField('manager')
       }, 100)
+    },
+    async btnOK() {
+      // 校验
+      await this.$refs.addDeptForm.validate()
+      // 发请求
+      await addDepartments({ ...this.formData, pid: this.node.id })
+      // 弹出提示
+      this.$message.success('操作成功')
+      // 通知页面更新数据
+      this.$emit('addDepartments')
+      // 关闭弹窗
     }
   }
 }
