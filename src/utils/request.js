@@ -10,7 +10,7 @@ import router from '@/router'
 
 import { getTimeStamp } from '@/utils/auth'
 
-const timeoutDuration = 500000
+const timeoutDuration = 2 * 60 * 60 * 1000
 
 function checkTimeout() {
   // 1. 拿出之前记录的时间
