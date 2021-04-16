@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { getDepartments, addDepartments } from '@/api/departments'
+import { getDepartments, addDepartments, getDeptDetailById } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 
 export default {
@@ -133,6 +133,9 @@ export default {
       this.$refs.addDeptForm.resetFields()
       // 关闭弹窗
       this.$emit('update:showDialog', false)
+    },
+    async getDeptDetailById(id) {
+      this.formData = await getDeptDetailById(id)
     }
   }
 }

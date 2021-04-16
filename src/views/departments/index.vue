@@ -13,12 +13,17 @@
           <template slot-scope="scope">
             <!-- 每次渲染到的部门数据, 就会在 scope.data 里面储存 -->
             <!-- {{ scope.data.name }} -->
-            <TreeTools :data="scope.data" @delDepartments="getDepartments" @addDepartments="addDepartments" />
+            <TreeTools
+              :data="scope.data"
+              @delDepartments="getDepartments"
+              @addDepartments="addDepartments"
+              @editDepartments="editDepartments"
+            />
           </template>
         </el-tree>
       </el-card>
 
-      <AddDept :show-dialog.sync="showDialog" :node="node" @addDepartments="getDepartments" />
+      <AddDept ref="addDept" :show-dialog.sync="showDialog" :node="node" @addDepartments="getDepartments" />
     </div>
   </div>
 </template>
@@ -58,6 +63,18 @@ export default {
       this.departs = listToTreeData(depts, '')
     },
     addDepartments(data) {
+      this.showDialog = true
+      this.node = data
+    },
+    async editDepartments(data) {
+      // 这里是编辑的弹窗
+      // 除了之前新增要做的事情
+      // 包括弹窗, 和记录当前被点击的部门以外
+      // 还需要通知弹窗, 记得回显数据
+      // 这里知道是编辑, 但是这里没法修改子组件数据
+      // 修改函数需要卸载子组件里面
+      // 这里只负责触发
+      await this.$refs.addDept.getDeptDetailById(data.id)
       this.showDialog = true
       this.node = data
     }
