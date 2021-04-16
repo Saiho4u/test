@@ -3,7 +3,7 @@
   <el-dialog title="新增部门" :visible="showDialog">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
-    <el-form label-width="120px" :model="formData" :rules="rules">
+    <el-form ref="addDeptForm" label-width="120px" :model="formData" :rules="rules">
       <el-form-item label="部门名称" prop="name">
         <el-input v-model="formData.name" style="width:80%" placeholder="1-50个字符" />
       </el-form-item>
@@ -16,6 +16,7 @@
           style="width:80%"
           placeholder="请选择"
           @focus="getEmployeeSimple"
+          @blur="checkManager"
         >
           <el-option v-for="item in employeeList" :key="item.id" :value="item.username" :label="item.username" />
         </el-select>
@@ -106,6 +107,11 @@ export default {
   methods: {
     async getEmployeeSimple() {
       this.employeeList = await getEmployeeSimple()
+    },
+    checkManager() {
+      setTimeout(() => {
+        this.$refs.addDeptForm.validateField('manager')
+      }, 100)
     }
   }
 }
