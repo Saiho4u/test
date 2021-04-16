@@ -133,6 +133,15 @@ export default {
       this.$emit('update:showDialog', false)
     },
     btnCancel() {
+      // form 表单清理函数只管绑定了的数据
+      // 后续回显硬加进去的数据则无法清理
+      // 我们可以手动将数据 回复原样
+      this.formData = {
+        name: '',
+        code: '',
+        manager: '',
+        introduce: ''
+      }
       // 关闭前清理表单绑定数据
       // 还有清理校验错误提示
       this.$refs.addDeptForm.resetFields()
