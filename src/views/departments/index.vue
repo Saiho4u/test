@@ -18,7 +18,7 @@
         </el-tree>
       </el-card>
 
-      <AddDept :show-dialog="showDialog" />
+      <AddDept :show-dialog="showDialog" :node="node" />
     </div>
   </div>
 </template>
@@ -43,7 +43,8 @@ export default {
       treeOption: {
         label: 'name'
       },
-      showDialog: false
+      showDialog: false,
+      node: {}
     }
   },
   created() {
@@ -55,8 +56,9 @@ export default {
       // res.depts 就是我们想要的部门数组
       this.departs = listToTreeData(depts, '')
     },
-    addDepartments() {
+    addDepartments(data) {
       this.showDialog = true
+      this.node = data
     }
   }
 }

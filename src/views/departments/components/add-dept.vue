@@ -29,14 +29,33 @@
 </template>
 
 <script>
+import { getDepartments } from '@/api/departments'
 export default {
   props: {
     showDialog: {
       type: Boolean,
       default: false
+    },
+    node: {
+      type: Object,
+      required: true
     }
   },
   data() {
+    const checkRepeatName = async(rule, value, callback) => {
+      // 如果相同父部门下有重名, 就报错
+      // 1. 所有部门列表
+      const { depts } = await getDepartments()
+      // 2. 当前选中部门的id
+      const pid = this.node.id
+      // 3. 通过筛选就能够得出当前的所有同级
+      // 4. 同级之间不能 重复即可
+      const isRepeat = depts
+        .filter(item => item.pid === pid)
+        .some(item => item.name === value)
+
+      isRepeat ? callback(new Error('同一部门下不能重名')) : callback()
+    }
     return {
       formData: {
         name: '',
@@ -47,7 +66,9 @@ export default {
       rules: {
         name: [
           { required: true, message: '数据不能为空', trigger: 'blur' },
-          { max: 50, message: '长度不能超过 50', trigger: 'blur' }
+          { max: 50, message: '长度不能超过 50', trigger: 'blur' },
+          // 第三规则同部门下不能重名
+          { trigger: 'blur', validator: checkRepeatName }
         ],
         code: [
           { required: true, message: '数据不能为空', trigger: 'blur' },

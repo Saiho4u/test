@@ -56,7 +56,7 @@ export default {
       this.$emit('delDepartments')
     },
     addDepartments() {
-      this.$emit('addDepartments')
+      this.$emit('addDepartments', this.data)
     }
   }
 }
