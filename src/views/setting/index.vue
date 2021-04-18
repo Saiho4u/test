@@ -20,9 +20,9 @@
               <el-table-column label="角色名称" prop="name" width="240" />
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
-                <template slot-scope="{scope}">
+                <template slot-scope="scope">
                   <el-button size="small" type="success">分配权限</el-button>
-                  <el-button size="small" type="primary" @click="editRole">编辑</el-button>
+                  <el-button size="small" type="primary" @click="editRole(scope.row.id)">编辑</el-button>
                   <el-button size="small" type="danger" @click="deleteRole(scope.row.id)">删除</el-button>
                 </template>
               </el-table-column>
@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { getCompanyInfo, getRoleList, deleteRole } from '@/api/setting'
+import { getCompanyInfo, getRoleList, deleteRole, getRoleDetail, updateRole } from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -155,11 +155,31 @@ export default {
       // 重新加载
       this.getRoleList()
     },
-    editRole() {
+    async editRole(id) {
+      // 编辑在打开弹窗前请记得回显数据
+      this.roleForm = await getRoleDetail(id)
       this.showDialog = true
     },
     btnCancel() {},
-    btnOK() {}
+    async btnOK() {
+      // 校验表单
+      await this.$refs.roleForm.validate()
+      // 发请求
+      // 可以预想之后的添加新角色也是这个函数
+      // 根据当前表单是否有回显 id 可以决定是什么 api
+      if (this.roleForm.id) {
+        // 编辑
+        await updateRole(this.roleForm)
+      } else {
+        // 新增
+      }
+      // 提示用户
+      this.$message.success('操作成功')
+      // 更新页面
+      this.getRoleList()
+      // 关闭弹窗
+      this.showDialog = false
+    }
   }
 }
 </script>
