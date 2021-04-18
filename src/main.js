@@ -40,10 +40,11 @@ Vue.config.productionTip = false
 import { imgerror } from '@/directives'
 Vue.directive('imgerror', imgerror)
 
-// 全局注册组件
-// Vue.component(组件名, 组件对象)
-import PageTools from '@/components/PageTools'
-Vue.component('PageTools', PageTools)
+// // 全局注册组件
+// // Vue.component(组件名, 组件对象)
+// import PageTools from '@/components/PageTools'
+// Vue.component('PageTools', PageTools)
+import '@/components/index.js'
 
 new Vue({
   el: '#app',
