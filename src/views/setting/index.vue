@@ -15,14 +15,18 @@
             </el-row>
             <!-- 表格 -->
             <el-table border="" :data="roleList">
+
               <el-table-column label="序号" width="120" type="index" />
               <el-table-column label="角色名称" prop="name" width="240" />
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
-                <el-button size="small" type="success">分配权限</el-button>
-                <el-button size="small" type="primary">编辑</el-button>
-                <el-button size="small" type="danger">删除</el-button>
+                <template slot-scope="{scope}">
+                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button size="small" type="primary">编辑</el-button>
+                  <el-button size="small" type="danger" @click="deleteRole(scope.row.id)">删除</el-button>
+                </template>
               </el-table-column>
+
             </el-table>
             <!-- 分页组件 -->
             <el-row type="flex" justify="center" align="middle" style="height: 60px">
@@ -66,7 +70,7 @@
 </template>
 
 <script>
-import { getCompanyInfo, getRoleList } from '@/api/setting'
+import { getCompanyInfo, getRoleList, deleteRole } from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -107,6 +111,16 @@ export default {
       // 1. 设定当前页
       this.pageSetting.page = newPage
       // 2. 发请求
+      this.getRoleList()
+    },
+    async deleteRole(id) {
+      // 二次校验
+      await this.$confirm('是否确认删除')
+      // 发请求
+      await deleteRole(id)
+      // 提示
+      this.$message.success('删除成功')
+      // 重新加载
       this.getRoleList()
     }
   }
