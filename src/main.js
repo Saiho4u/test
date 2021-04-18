@@ -44,7 +44,21 @@ Vue.directive('imgerror', imgerror)
 // // Vue.component(组件名, 组件对象)
 // import PageTools from '@/components/PageTools'
 // Vue.component('PageTools', PageTools)
-import '@/components/index.js'
+// import '@/components/index.js'
+// 以上这种办法并不规范, 既不符合导入导出对象的习惯
+// 也没有明确所操作的事情
+// vue 提供了一个插件安装机制
+// Vue.use(插件对象)
+
+// // 模拟伪代码
+// Vue.use = (obj) => {
+//   // 每当 use 接收到一个对象时
+//   // 自动执行对象里面的 install 方法
+//   // 同时将 vue 的构造器传入
+//   obj.install(Vue)
+// }
+import Component from '@/components/index.js'
+Vue.use(Component)
 
 new Vue({
   el: '#app',
