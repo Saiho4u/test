@@ -27,7 +27,12 @@
             <!-- 分页组件 -->
             <el-row type="flex" justify="center" align="middle" style="height: 60px">
               <!-- 分页组件 -->
-              <el-pagination layout="prev,pager,next" />
+              <el-pagination
+                layout="prev,pager,next"
+                :page-size="pageSetting.pagesize"
+                :total="pageSetting.total"
+                @current-change="currentChange"
+              />
             </el-row>
           </el-tab-pane>
 
@@ -76,7 +81,8 @@ export default {
       // 决定分页数据
       pageSetting: {
         page: 1,
-        pagesize: 2
+        pagesize: 2,
+        total: 0
       },
       roleList: []
     }
@@ -93,8 +99,15 @@ export default {
       this.formData = await getCompanyInfo(this.companyId)
     },
     async getRoleList() {
-      const { rows } = await getRoleList(this.pageSetting)
+      const { total, rows } = await getRoleList(this.pageSetting)
       this.roleList = rows
+      this.pageSetting.total = total
+    },
+    currentChange(newPage) {
+      // 1. 设定当前页
+      this.pageSetting.page = newPage
+      // 2. 发请求
+      this.getRoleList()
     }
   }
 }
