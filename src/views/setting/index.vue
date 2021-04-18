@@ -22,7 +22,7 @@
               <el-table-column label="操作">
                 <template slot-scope="{scope}">
                   <el-button size="small" type="success">分配权限</el-button>
-                  <el-button size="small" type="primary">编辑</el-button>
+                  <el-button size="small" type="primary" @click="editRole">编辑</el-button>
                   <el-button size="small" type="danger" @click="deleteRole(scope.row.id)">删除</el-button>
                 </template>
               </el-table-column>
@@ -65,6 +65,24 @@
 
         </el-tabs>
       </el-card>
+
+      <el-dialog title="编辑弹层" :visible="showDialog" @close="btnCancel">
+        <el-form ref="roleForm" :model="roleForm" :rules="rules" label-width="120px">
+          <el-form-item label="角色名称" prop="name">
+            <el-input v-model="roleForm.name" />
+          </el-form-item>
+          <el-form-item label="角色描述" prop="description">
+            <el-input v-model="roleForm.description" />
+          </el-form-item>
+        </el-form>
+        <!-- 底部 -->
+        <el-row slot="footer" type="flex" justify="center">
+          <el-col :span="6">
+            <el-button size="small" @click="btnCancel">取消</el-button>
+            <el-button size="small" type="primary" @click="btnOK">确定</el-button>
+          </el-col>
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -88,7 +106,21 @@ export default {
         pagesize: 2,
         total: 0
       },
-      roleList: []
+      roleList: [],
+      showDialog: false,
+      // 员工弹窗数据
+      roleForm: {
+        name: '',
+        description: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '数据不能为空', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '数据不能为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   computed: {
@@ -122,7 +154,12 @@ export default {
       this.$message.success('删除成功')
       // 重新加载
       this.getRoleList()
-    }
+    },
+    editRole() {
+      this.showDialog = true
+    },
+    btnCancel() {},
+    btnOK() {}
   }
 }
 </script>
