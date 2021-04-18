@@ -14,10 +14,10 @@
               >新增角色</el-button>
             </el-row>
             <!-- 表格 -->
-            <el-table border="">
-              <el-table-column label="序号" width="120" />
-              <el-table-column label="角色名称" width="240" />
-              <el-table-column label="描述" />
+            <el-table border="" :data="roleList">
+              <el-table-column label="序号" width="120" type="index" />
+              <el-table-column label="角色名称" prop="name" width="240" />
+              <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
                 <el-button size="small" type="success">分配权限</el-button>
                 <el-button size="small" type="primary">编辑</el-button>
@@ -61,17 +61,24 @@
 </template>
 
 <script>
-import { getCompanyInfo } from '@/api/setting'
+import { getCompanyInfo, getRoleList } from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
+      // 公司信息
       formData: {
         name: '',
         companyAddress: '',
         mailbox: '',
         remarks: ''
-      }
+      },
+      // 决定分页数据
+      pageSetting: {
+        page: 1,
+        pagesize: 2
+      },
+      roleList: []
     }
   },
   computed: {
@@ -79,10 +86,15 @@ export default {
   },
   created() {
     this.getCompanyInfo()
+    this.getRoleList()
   },
   methods: {
     async getCompanyInfo() {
       this.formData = await getCompanyInfo(this.companyId)
+    },
+    async getRoleList() {
+      const { rows } = await getRoleList(this.pageSetting)
+      this.roleList = rows
     }
   }
 }
