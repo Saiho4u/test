@@ -11,6 +11,7 @@
                 icon="el-icon-plus"
                 size="small"
                 type="primary"
+                @click="showDialog = true"
               >新增角色</el-button>
             </el-row>
             <!-- 表格 -->
@@ -66,7 +67,7 @@
         </el-tabs>
       </el-card>
 
-      <el-dialog title="编辑弹层" :visible="showDialog" @close="btnCancel">
+      <el-dialog :title="title" :visible="showDialog" @close="btnCancel">
         <el-form ref="roleForm" :model="roleForm" :rules="rules" label-width="120px">
           <el-form-item label="角色名称" prop="name">
             <el-input v-model="roleForm.name" />
@@ -88,7 +89,7 @@
 </template>
 
 <script>
-import { getCompanyInfo, getRoleList, deleteRole, getRoleDetail, updateRole } from '@/api/setting'
+import { getCompanyInfo, getRoleList, deleteRole, getRoleDetail, updateRole, addRole } from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -124,7 +125,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['companyId'])
+    ...mapGetters(['companyId']),
+    title() {
+      return this.roleForm.id ? '编辑角色' : '新增角色'
+    }
   },
   created() {
     this.getCompanyInfo()
@@ -160,7 +164,20 @@ export default {
       this.roleForm = await getRoleDetail(id)
       this.showDialog = true
     },
-    btnCancel() {},
+    btnCancel() {
+      // 因为编辑可能回显一些没有绑定过的数据
+      // 要手动清除
+      this.roleForm = {
+        name: '',
+        description: ''
+      }
+      // 清理表单自带的清理函数
+      // 可以清理表单绑定的数据
+      // 和错误提示
+      this.$refs.roleForm.resetFields()
+      // 关闭弹窗
+      this.showDialog = false
+    },
     async btnOK() {
       // 校验表单
       await this.$refs.roleForm.validate()
@@ -172,6 +189,7 @@ export default {
         await updateRole(this.roleForm)
       } else {
         // 新增
+        await addRole(this.roleForm)
       }
       // 提示用户
       this.$message.success('操作成功')
