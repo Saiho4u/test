@@ -14,3 +14,12 @@ export function getEmployeeList(params) {
     params
   })
 }
+
+// 批量导入员工
+export function importEmployees(data) {
+  return request({
+    method: 'post',
+    url: '/sys/user/batch',
+    data
+  })
+}

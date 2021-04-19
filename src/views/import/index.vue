@@ -3,9 +3,10 @@
 </template>
 
 <script>
+import { importEmployees } from '@/api/employees'
 export default {
   methods: {
-    upload(data) {
+    async upload(data) {
       // 这里是交给子组件的成功回调
       // 可以接收到子组件给的数据
       // 可以打出来看看
@@ -36,6 +37,12 @@ export default {
       })
 
       console.log(newUserArray)
+
+      await importEmployees(newUserArray)
+
+      this.$message.success('上传成功')
+
+      this.$router.back()
     },
     zh2en(user, dict) {
       const newUser = {}
