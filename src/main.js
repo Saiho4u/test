@@ -60,6 +60,12 @@ Vue.directive('imgerror', imgerror)
 import Component from '@/components/index.js'
 Vue.use(Component)
 
+// 过滤器创建
+// Vue.filter(名字, 过滤函数)
+Vue.filter('formatDate', (oldVal) => {
+  return oldVal.split('T')[0]
+})
+
 new Vue({
   el: '#app',
   router,
