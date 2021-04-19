@@ -62,9 +62,21 @@ Vue.use(Component)
 
 // 过滤器创建
 // Vue.filter(名字, 过滤函数)
-Vue.filter('formatDate', (oldVal) => {
-  return oldVal.split('T')[0]
-})
+// import { formatDate } from '@/filters'
+// Vue.filter('formatDate', formatDate)
+// 上面这种呢是逐个函数引入注册过滤器
+// 希望可以统一将所有过滤器一起引入并注册
+// 1. 将来自于一个文件的所有暴露属性一起引入放到一个对象中
+import * as filters from '@/filters'
+// console.log(filters)
+// 遍历 filters 里面的所有属性, 以 key 为名称 以 value 为函数
+// for in 循环可以遍历对象
+for (const key in filters) {
+  // console.log(key)
+  // 对应的函数可以回到 filters 里面拿
+  // filters[key]
+  Vue.filter(key, filters[key])
+}
 
 new Vue({
   el: '#app',
@@ -72,3 +84,4 @@ new Vue({
   store,
   render: h => h(App)
 })
+
