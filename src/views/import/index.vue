@@ -47,9 +47,29 @@ export default {
         // 应该找到对应的英文 key
         const enKey = dict[key]
         // 将对应的 value 值放入新用户对象的 英文 key 中
-        newUser[enKey] = user[key]
+        // 普通情况下, 直接将源数据放入新用户对象是可以的
+        // 除了日期的特殊情况, 需要先进性转换
+        if (enKey === 'timeOfEntry' || enKey === 'correctionTime') {
+          // 转换日期
+          const timeStr = this.formatDate(user[key], '/')
+          const date = new Date(timeStr)
+          newUser[enKey] = date
+        } else {
+          newUser[enKey] = user[key]
+        }
       }
       return newUser
+    },
+    formatDate(numb, format) {
+      const time = new Date((numb - 1) * 24 * 3600000 + 1)
+      time.setYear(time.getFullYear() - 70)
+      const year = time.getFullYear() + ''
+      const month = time.getMonth() + 1 + ''
+      const date = time.getDate() - 1 + ''
+      if (format && format.length === 1) {
+        return year + format + month + format + date
+      }
+      return year + (month < 10 ? '0' + month : month) + (date < 10 ? '0' + date : date)
     }
   }
 }
