@@ -154,7 +154,13 @@ export default {
       await this.$confirm('是否确认删除')
       // 发请求
       await deleteRole(id)
+      // 担心当前页面删没了怎么办
+      // 1. 如果当前页面只剩下一条 应该向前翻页
+      // 2. 如果当前已经在第一页则是例外, 不翻页
       // 提示
+      if (this.roleList.length === 1 && this.pageSetting.page !== 1) {
+        this.pageSetting.page--
+      }
       this.$message.success('删除成功')
       // 重新加载
       this.getRoleList()
