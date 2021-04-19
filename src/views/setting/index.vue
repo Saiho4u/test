@@ -32,10 +32,12 @@
             <!-- 分页组件 -->
             <el-row type="flex" justify="center" align="middle" style="height: 60px">
               <!-- 分页组件 -->
+              <!-- 将当前页码绑定到分页组件 -->
               <el-pagination
                 layout="prev,pager,next"
                 :page-size="pageSetting.pagesize"
                 :total="pageSetting.total"
+                :current-page="pageSetting.page"
                 @current-change="currentChange"
               />
             </el-row>
@@ -196,6 +198,12 @@ export default {
       } else {
         // 新增
         await addRole(this.roleForm)
+        // 1. 设定最新的 total
+        // 如果原来 total 是 10 分页组件认为有 5 页
+        // ++ 之后分页组件就知道有 6 页了 再去计算和翻页, 就没问题了
+        this.pageSetting.total++
+        // 2. 计算出最新的页码
+        this.pageSetting.page = Math.ceil(this.pageSetting.total / this.pageSetting.pagesize)
       }
       // 提示用户
       this.$message.success('操作成功')
