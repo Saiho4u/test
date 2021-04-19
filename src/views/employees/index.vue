@@ -16,7 +16,7 @@
           <el-table-column label="序号" sortable="" type="index" />
           <el-table-column label="姓名" sortable="" prop="username" />
           <el-table-column label="工号" sortable="" prop="workNumber" />
-          <el-table-column label="聘用形式" sortable="" prop="formOfEmployment" />
+          <el-table-column label="聘用形式" sortable="" prop="formOfEmployment" :formatter="formatEmployment" />
           <el-table-column label="部门" sortable="" prop="departmentName" />
           <el-table-column label="入职时间" sortable="" prop="timeOfEntry" />
           <el-table-column label="账户状态" sortable="" prop="enableState" />
@@ -49,6 +49,7 @@
 // 1. 引入
 // import PageTools from '@/components/PageTools'
 import { getEmployeeList } from '@/api/employees'
+import employeesEnum from '@/api/constant/employees'
 export default {
 // 2. 注册
   // components: {
@@ -80,6 +81,16 @@ export default {
     currentChange(newPage) {
       this.pageSetting.page = newPage
       this.getEmployeeList()
+    },
+    formatEmployment(row, column, cellValue) {
+      // 这里可以接受到当前格子的数据
+      // 一共四个参数
+      // 在这里可灵活的进行格式化,
+      // 最终 return 的值会显示在页面上
+      // 从枚举数据中找到 id 跟我的格子数据一样的对象, 输出他的 value 即可
+      const obj = employeesEnum.hireType.find(item => item.id === cellValue)
+      // 我们的枚举都是有限, 所以有可能找不到
+      return obj ? obj.value : '未知形式'
     }
   }
 }
