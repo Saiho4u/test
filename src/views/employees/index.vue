@@ -51,7 +51,7 @@
         </el-row>
       </el-card>
 
-      <AddEmployee :show-dialog="showDialog" />
+      <AddEmployee :show-dialog.sync="showDialog" />
     </div>
   </div>
 </template>
