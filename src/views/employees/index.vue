@@ -59,6 +59,7 @@
 // import PageTools from '@/components/PageTools'
 import { getEmployeeList } from '@/api/employees'
 import employeesEnum from '@/api/constant/employees'
+import { formatDate } from '@/filters'
 // 总是引入 excel 导出包有点浪费, 因为只有点击时才使用, 比较少
 // import * as excel from '@/vendor/Export2Excel'
 export default {
@@ -166,7 +167,19 @@ export default {
         // 2. 拿到表头对应的英文 key
         const enKey = dict[key]
         // 3. 得到 user 当中的数据
-        const value = user[enKey]
+        // 需要根据 key 做额外特殊处理
+        let value
+        if (enKey === 'timeOfEntry' || enKey === 'correctionTime') {
+          // 处理时间 value | format
+          value = formatDate(user[enKey])
+        } else if (enKey === 'formOfEmployment') {
+          // 处理聘用形式
+          const obj = employeesEnum.hireType.find(item => item.id === user[enKey])
+          value = obj ? obj.value : '未知形式'
+        } else {
+          value = user[enKey]
+        }
+
         // 4. 放入新数组中
         newUser.push(value)
       }
