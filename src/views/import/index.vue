@@ -78,7 +78,54 @@ export default {
       }
       return year + (month < 10 ? '0' + month : month) + (date < 10 ? '0' + date : date)
     }
+
   }
+  // 以下是详细讲解
+  // methods: {
+  //   async upload(data) {
+  //     // 来源数据在 data 中
+  //     // data.results = [
+  //     //   { 姓名: '高大山', 电话: '13222222222', 工号: '29283' },
+  //     //   { 姓名: '高大山', 电话: '13222222222', 工号: '29283' },
+  //     //   { 姓名: '高大山', 电话: '13222222222', 工号: '29283' }
+  //     // ]
+
+  //     const dict = {
+  //       姓名: 'username',
+  //       电话: 'mobile',
+  //       工号: 'workNumber'
+  //     }
+
+  //     const newData = data.results.map(item => {
+  //       return this.zh2en(item, dict)
+  //     })
+
+  //     // 最终需要做的事情就是发请求
+  //     // newData = [
+  //     //   { username: '高大山', mobile: '13222222222', workNumber: '29283' },
+  //     //   { username: '高大山', mobile: '13222222222', workNumber: '29283' },
+  //     //   { username: '高大山', mobile: '13222222222', workNumber: '29283' }
+  //     // ]
+
+  //     // uploadExcelApi(newData)
+  //   },
+  //   zh2en(user, dict) {
+  //     // user = { 姓名: '高大山', 电话: '13222222222', 工号: '29283' }
+  //     // newUser = { username: '高大山', mobile: '13222222222', workNumber: '29283' }
+  //     // dict = {
+  //     //   姓名: 'username',
+  //     //   电话: 'mobile',
+  //     //   工号: 'workNumber'
+  //     // }
+  //     const newUser = {}
+  //     for (const key in user) {
+  //       const enKey = dict[key] // username
+  //       const value = user[key] // 高大山
+  //       newUser[enKey] = value
+  //     }
+  //     return newUser
+  //   }
+  // }
 }
 </script>
 
