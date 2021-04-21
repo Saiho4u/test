@@ -7,7 +7,7 @@
         <template slot="after">
           <el-button size="small" type="warning" @click="$router.push('/import')">导入</el-button>
           <el-button size="small" type="danger" @click="export2Excel">导出</el-button>
-          <el-button size="small" type="primary">新增员工</el-button>
+          <el-button size="small" type="primary" @click="showDialog = true">新增员工</el-button>
         </template>
       </page-tools>
       <!-- 页面主要内容 -->
@@ -50,6 +50,8 @@
           />
         </el-row>
       </el-card>
+
+      <AddEmployee :show-dialog="showDialog" />
     </div>
   </div>
 </template>
@@ -62,11 +64,13 @@ import employeesEnum from '@/api/constant/employees'
 import { formatDate } from '@/filters'
 // 总是引入 excel 导出包有点浪费, 因为只有点击时才使用, 比较少
 // import * as excel from '@/vendor/Export2Excel'
+
+import AddEmployee from './components/add-employee'
 export default {
 // 2. 注册
-  // components: {
-  //   PageTools
-  // }
+  components: {
+    AddEmployee
+  },
   data() {
     return {
       loading: false,
@@ -75,7 +79,8 @@ export default {
         total: 0,
         page: 1,
         size: 2
-      }
+      },
+      showDialog: false
     }
   },
   created() {
