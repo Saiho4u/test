@@ -18,7 +18,7 @@
         <el-input v-model="formData.workNumber" style="width:90%" placeholder="请输入工号" />
       </el-form-item>
       <el-form-item label="部门" prop="departmentName">
-        <el-input v-model="formData.departmentName" style="width:90%" placeholder="请选择部门" />
+        <el-input v-model="formData.departmentName" style="width:90%" placeholder="请选择部门" @focus="getDepartments" />
       </el-form-item>
       <el-form-item label="转正时间">
         <el-date-picker v-model="formData.correctionTime" style="width:90%" placeholder="请选择转正时间" />
@@ -37,6 +37,12 @@
 </template>
 
 <script>
+// 引入部门数据所需函数
+// 1. api
+import { getDepartments } from '@/api/departments'
+// 2. 转换函数
+import { listToTreeData } from '@/utils'
+
 export default {
   props: {
     showDialog: {
@@ -66,7 +72,14 @@ export default {
         workNumber: [{ required: true, message: '工号不能为空', trigger: 'blur' }],
         departmentName: [{ required: true, message: '部门不能为空', trigger: 'change' }],
         timeOfEntry: [{ required: true, message: '入职时间', trigger: 'blur' }]
-      }
+      },
+      depts: []
+    }
+  },
+  methods: {
+    async getDepartments() {
+      const { depts } = await getDepartments()
+      this.depts = listToTreeData(depts, '')
     }
   }
 }
