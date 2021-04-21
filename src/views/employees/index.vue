@@ -30,13 +30,13 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
-            <template>
+            <template slot-scope="{row}">
               <el-button type="text" size="small">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small">角色</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -57,7 +57,7 @@
 <script>
 // 1. 引入
 // import PageTools from '@/components/PageTools'
-import { getEmployeeList } from '@/api/employees'
+import { delEmployee, getEmployeeList } from '@/api/employees'
 import employeesEnum from '@/api/constant/employees'
 import { formatDate } from '@/filters'
 // 总是引入 excel 导出包有点浪费, 因为只有点击时才使用, 比较少
@@ -184,6 +184,16 @@ export default {
         newUser.push(value)
       }
       return newUser
+    },
+    async delEmployee(id) {
+      // 二次校验
+      await this.$confirm('是否确认删除?')
+      // 请求
+      await delEmployee(id)
+      // 提示
+      this.$message.success('删除成功')
+      // 更新页面
+      this.getEmployeeList()
     }
   }
 }
