@@ -28,7 +28,14 @@
           v-model="formData.formOfEmployment"
           style="width: 90%"
           placeholder="请选择"
-        />
+        >
+          <el-option
+            v-for="item in employeeEnum.hireType"
+            :key="item.id"
+            :label="item.value"
+            :value="item.id"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="工号" prop="workNumber">
         <el-input
@@ -80,6 +87,8 @@ import { getDepartments } from '@/api/departments'
 // 2. 转换函数
 import { listToTreeData } from '@/utils'
 
+import employeeEnum from '@/api/constant/employees'
+
 export default {
   props: {
     showDialog: {
@@ -127,7 +136,8 @@ export default {
         timeOfEntry: [{ required: true, message: '入职时间', trigger: 'blur' }]
       },
       depts: [],
-      showTree: false
+      showTree: false,
+      employeeEnum
     }
   },
   methods: {
