@@ -31,3 +31,12 @@ export function delEmployee(id) {
     url: '/sys/user/' + id
   })
 }
+
+// 新增员工
+export function addEmployee(data) {
+  return request({
+    method: 'post',
+    url: '/sys/user',
+    data
+  })
+}

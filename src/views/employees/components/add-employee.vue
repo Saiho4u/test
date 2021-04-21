@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="新增员工" :visible="showDialog">
     <!-- 表单 -->
-    <el-form label-width="120px" :model="formData" :rules="rules">
+    <el-form ref="addEmployee" label-width="120px" :model="formData" :rules="rules">
       <el-form-item label="姓名" prop="username">
         <el-input
           v-model="formData.username"
@@ -73,7 +73,7 @@
       <el-row type="flex" justify="center">
         <el-col :span="6">
           <el-button size="small">取消</el-button>
-          <el-button type="primary" size="small">确定</el-button>
+          <el-button type="primary" size="small" @click="btnOK">确定</el-button>
         </el-col>
       </el-row>
     </template>
@@ -88,6 +88,8 @@ import { getDepartments } from '@/api/departments'
 import { listToTreeData } from '@/utils'
 
 import employeeEnum from '@/api/constant/employees'
+
+import { addEmployee } from '@/api/employees'
 
 export default {
   props: {
@@ -152,6 +154,24 @@ export default {
       this.formData.departmentName = data.name
       // 隐藏弹窗
       this.showTree = false
+    },
+    async btnOK() {
+      // 校验表单
+      await this.$refs.addEmployee.validate()
+      // 发请求
+      await addEmployee(this.formData)
+      // 重新渲染
+      // 关闭弹窗
+      // 我们是子组件,
+      // 负责渲染和关闭弹窗的都是父组件
+      // 正常情况下需要 $emit 通知父组件处理
+      // 另外 this.$parent 可以拿到父组件的属性和方法,直接调用
+      this.$parent.getEmployeeList()
+      this.$parent.showDialog = false
+      this.$message.success('操作成功')
+    },
+    btnCancel() {
+
     }
   }
 }
