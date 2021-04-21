@@ -6,7 +6,7 @@
         <span slot="before">共166条记录</span>
         <template slot="after">
           <el-button size="small" type="warning" @click="$router.push('/import')">导入</el-button>
-          <el-button size="small" type="danger">导出</el-button>
+          <el-button size="small" type="danger" @click="export2Excel">导出</el-button>
           <el-button size="small" type="primary">新增员工</el-button>
         </template>
       </page-tools>
@@ -59,6 +59,8 @@
 // import PageTools from '@/components/PageTools'
 import { getEmployeeList } from '@/api/employees'
 import employeesEnum from '@/api/constant/employees'
+// 总是引入 excel 导出包有点浪费, 因为只有点击时才使用, 比较少
+// import * as excel from '@/vendor/Export2Excel'
 export default {
 // 2. 注册
   // components: {
@@ -100,6 +102,18 @@ export default {
       const obj = employeesEnum.hireType.find(item => item.id === cellValue)
       // 我们的枚举都是有限, 所以有可能找不到
       return obj ? obj.value : '未知形式'
+    },
+    async export2Excel() {
+      // 每当点击按钮就要导出
+      // 需要用到 vendor/Export2Excel.js 文件
+      // 如果是最上方引入的话, 这里直接就可以 log 了
+      // 如果没有在上方引入, 可以在这个点击的时候
+      // 就按需加载
+      // import('@/vendor/Export2Excel').then(excel => {
+      //   console.log(excel)
+      // })
+      const excel = await import('@/vendor/Export2Excel')
+      console.log(excel)
     }
   }
 }
