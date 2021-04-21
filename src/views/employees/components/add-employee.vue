@@ -19,7 +19,7 @@
       </el-form-item>
       <el-form-item label="部门" prop="departmentName">
         <el-input v-model="formData.departmentName" style="width:90%" placeholder="请选择部门" @focus="getDepartments" />
-        <el-tree v-if="showTree" class="deptsList" :data="depts" :props="{label: 'name'}" :default-expand-all="true" />
+        <el-tree v-if="showTree" class="deptsList" :data="depts" :props="{label: 'name'}" :default-expand-all="true" @node-click="selectDepartment" />
       </el-form-item>
       <el-form-item label="转正时间">
         <el-date-picker v-model="formData.correctionTime" style="width:90%" placeholder="请选择转正时间" />
@@ -83,6 +83,13 @@ export default {
       const { depts } = await getDepartments()
       this.depts = listToTreeData(depts, '')
       this.showTree = true
+    },
+    selectDepartment(data) {
+      console.log(data)
+      // 将选中的节点数据名字赋值给输入框
+      this.formData.departmentName = data.name
+      // 隐藏弹窗
+      this.showTree = false
     }
   }
 }
