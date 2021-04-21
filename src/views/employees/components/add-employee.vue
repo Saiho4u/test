@@ -166,6 +166,8 @@ export default {
       // 负责渲染和关闭弹窗的都是父组件
       // 正常情况下需要 $emit 通知父组件处理
       // 另外 this.$parent 可以拿到父组件的属性和方法,直接调用
+      // 这里是给大家演示, 知道这个用法即可
+      // 尽可能少用
       this.$parent.getEmployeeList()
       this.$parent.showDialog = false
       this.$message.success('操作成功')
