@@ -114,6 +114,16 @@ export default {
       // })
       const excel = await import('@/vendor/Export2Excel')
       console.log(excel)
+      // 调用 excel.export_json_to_excel 需要带上配置对象
+      excel.export_json_to_excel({
+        // 两个必填参数
+        header: ['姓名', '年龄', '性别'],
+        data: [
+          // { 姓名: 'tom', 年龄: 666, 性别: 男 }
+          ['tom', 666, '男'],
+          ['rose', 666, '女']
+        ]
+      })
     }
   }
 }
