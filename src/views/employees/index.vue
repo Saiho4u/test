@@ -104,6 +104,13 @@ export default {
       return obj ? obj.value : '未知形式'
     },
     async export2Excel() {
+      // 先要拿到所有的员工数据
+      const { rows } = await getEmployeeList({
+        page: 1,
+        size: this.pageSetting.total
+      })
+
+      console.log(rows)
       // 每当点击按钮就要导出
       // 需要用到 vendor/Export2Excel.js 文件
       // 如果是最上方引入的话, 这里直接就可以 log 了
