@@ -104,33 +104,73 @@ export default {
       return obj ? obj.value : '未知形式'
     },
     async export2Excel() {
-      // 先要拿到所有的员工数据
+      // 1. 引入库
+      const excel = await import('@/vendor/Export2Excel')
+      // 2. 加载数据
       const { rows } = await getEmployeeList({
         page: 1,
         size: this.pageSetting.total
       })
-
-      console.log(rows)
-      // 每当点击按钮就要导出
-      // 需要用到 vendor/Export2Excel.js 文件
-      // 如果是最上方引入的话, 这里直接就可以 log 了
-      // 如果没有在上方引入, 可以在这个点击的时候
-      // 就按需加载
-      // import('@/vendor/Export2Excel').then(excel => {
-      //   console.log(excel)
-      // })
-      const excel = await import('@/vendor/Export2Excel')
-      console.log(excel)
-      // 调用 excel.export_json_to_excel 需要带上配置对象
-      excel.export_json_to_excel({
-        // 两个必填参数
-        header: ['姓名', '年龄', '性别'],
-        data: [
-          // { 姓名: 'tom', 年龄: 666, 性别: 男 }
-          ['tom', 666, '男'],
-          ['rose', 666, '女']
-        ]
+      // 3. 按需转换
+      const dict = {
+        '手机号': 'mobile',
+        '姓名': 'username',
+        '入职日期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '转正日期': 'correctionTime',
+        '工号': 'workNumber',
+        '部门': 'departmentName'
+      }
+      const header = Object.keys(dict)
+      const data = rows.map(user => {
+        return this.obj2Array(user, dict)
       })
+      // 4. 保存文件
+      excel.export_json_to_excel({
+        header,
+        data
+      })
+
+      // // 先要拿到所有的员工数据
+      // const { rows } = await getEmployeeList({
+      //   page: 1,
+      //   size: this.pageSetting.total
+      // })
+
+      // console.log(rows)
+      // // 每当点击按钮就要导出
+      // // 需要用到 vendor/Export2Excel.js 文件
+      // // 如果是最上方引入的话, 这里直接就可以 log 了
+      // // 如果没有在上方引入, 可以在这个点击的时候
+      // // 就按需加载
+      // // import('@/vendor/Export2Excel').then(excel => {
+      // //   console.log(excel)
+      // // })
+      // const excel = await import('@/vendor/Export2Excel')
+      // console.log(excel)
+      // // 调用 excel.export_json_to_excel 需要带上配置对象
+      // excel.export_json_to_excel({
+      //   // 两个必填参数
+      //   header: ['姓名', '年龄', '性别'],
+      //   data: [
+      //     // { 姓名: 'tom', 年龄: 666, 性别: 男 }
+      //     ['tom', 666, '男'],
+      //     ['rose', 666, '女']
+      //   ]
+      // })
+    },
+    obj2Array(user, dict) {
+      const newUser = []
+      // 1. 遍历表头
+      for (const key in dict) {
+        // 2. 拿到表头对应的英文 key
+        const enKey = dict[key]
+        // 3. 得到 user 当中的数据
+        const value = user[enKey]
+        // 4. 放入新数组中
+        newUser.push(value)
+      }
+      return newUser
     }
   }
 }
