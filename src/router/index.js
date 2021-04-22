@@ -56,6 +56,18 @@ export const constantRoutes = [
   },
 
   {
+    path: '/test',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/test')
+      }
+    ]
+  },
+
+  {
     path: '/import',
     component: Layout,
     children: [{
