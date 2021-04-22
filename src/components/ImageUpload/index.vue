@@ -10,9 +10,16 @@
       action="#"
       list-type="picture-card"
       :file-list="fileList"
+
+      :on-preview="preview"
+      :class="{disable: fileList.length > 0}"
     >
       <i class="el-icon-plus" />
     </el-upload>
+
+    <el-dialog title="图兰" :visible="showDialog" @close="showDialog = false">
+      <img :src="previewUrl" alt="">
+    </el-dialog>
   </div>
 </template>
 
@@ -27,12 +34,28 @@ export default {
         {
           url: 'https://img1.baidu.com/it/u=145965533,3075282827&fm=26&fmt=auto&gp=0.jpg'
         }
-      ]
+      ],
+      showDialog: false,
+      previewUrl: ''
+    }
+  },
+  methods: {
+    preview(file) {
+      console.log(file)
+      this.previewUrl = file.url
+      this.showDialog = true
     }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.disable {
+  // less 穿透写法 /deep/
+  // scss 穿透写法 ::v-deep
+  // css 穿透写法是 >>>
+  ::v-deep .el-upload--picture-card {
+    display: none;
+  }
+}
 </style>
