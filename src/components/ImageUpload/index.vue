@@ -15,6 +15,7 @@
       :class="{disable: fileList.length > 0}"
 
       :on-remove="onRemove"
+      :on-change="onChange"
     >
       <i class="el-icon-plus" />
     </el-upload>
@@ -53,6 +54,11 @@ export default {
       // 2. fileList 是当前图片删除完之后的最新数组
       // console.log(this.fileList)
       // console.log(fileList)
+      this.fileList = [...fileList]
+    },
+    onChange(file, fileList) {
+      // 1. file 是变更的文件本身
+      // 2. fileList 是最新的数组结果
       this.fileList = [...fileList]
     }
   }
