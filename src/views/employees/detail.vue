@@ -22,7 +22,7 @@
             <UserInfo />
           </el-tab-pane>
           <el-tab-pane label="岗位信息">
-            456456
+            <JobInfo />
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -34,9 +34,11 @@
 import { getUserDetailById } from '@/api/user'
 import { saveUserDetailById } from '@/api/employees'
 import UserInfo from './components/user-info'
+import JobInfo from './components/job-info'
 export default {
   components: {
-    UserInfo
+    UserInfo,
+    JobInfo
   },
   data() {
     return {
