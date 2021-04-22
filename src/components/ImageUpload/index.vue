@@ -16,6 +16,7 @@
 
       :on-remove="onRemove"
       :on-change="onChange"
+      :http-request="upload"
     >
       <i class="el-icon-plus" />
     </el-upload>
@@ -60,6 +61,9 @@ export default {
       // 1. file 是变更的文件本身
       // 2. fileList 是最新的数组结果
       this.fileList = [...fileList]
+    },
+    upload(data) {
+      console.log(data)
     }
   }
 }
