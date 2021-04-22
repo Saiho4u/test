@@ -10,9 +10,11 @@
 // 对象里面必须有 install 属性, 是一个函数, 调用时会接受 Vue 构造器
 import PageTools from '@/components/PageTools'
 import UploadExcel from '@/components/UploadExcel'
+import ImageUpload from '@/components/ImageUpload'
 export default {
   install(Vue) {
     Vue.component('PageTools', PageTools)
     Vue.component('UploadExcel', UploadExcel)
+    Vue.component('ImageUpload', ImageUpload)
   }
 }
