@@ -1,11 +1,22 @@
 <template>
   <div>
     <!--
+      三个必填的属性
       action 必填, 但是后面我们用腾讯云所以就放一个 # 号即可
       list-type="picture-card" 决定样式
-
       file-list 是用来管理当前文件列表的, 是一个数组
      -->
+    <!--
+       附加功能
+       on-preview 添加以后多了一个放大镜, 点击后自己写弹窗
+       :class 在已经有一张图片的情况下, 不显示上传图标
+      -->
+    <!--
+        交互钩子
+        on-remove 删除
+        on-change 修改 (不能用 on-success 因为根本没有上传)
+        http-request 覆盖默认上传行为, 自定义上传实现
+      -->
     <el-upload
       action="#"
       list-type="picture-card"
