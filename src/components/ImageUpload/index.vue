@@ -13,6 +13,8 @@
 
       :on-preview="preview"
       :class="{disable: fileList.length > 0}"
+
+      :on-remove="onRemove"
     >
       <i class="el-icon-plus" />
     </el-upload>
@@ -44,6 +46,14 @@ export default {
       console.log(file)
       this.previewUrl = file.url
       this.showDialog = true
+    },
+    onRemove(file, fileList) {
+      // 两个参数
+      // 1. file 是当前被删除的图片
+      // 2. fileList 是当前图片删除完之后的最新数组
+      // console.log(this.fileList)
+      // console.log(fileList)
+      this.fileList = [...fileList]
     }
   }
 }
