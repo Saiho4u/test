@@ -58,7 +58,8 @@
         <el-col :span="12">
           <el-form-item label="员工头像">
             <!-- 放置上传图片 -->
-
+            <!-- 个人头像 -->
+            <ImageUpload ref="avatar" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -85,11 +86,12 @@
             />
           </el-select>
         </el-form-item>
-        <!-- 个人头像 -->
+
         <!-- 员工照片 -->
 
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
+          <ImageUpload ref="picture" />
         </el-form-item>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
@@ -365,6 +367,13 @@ export default {
   methods: {
     async getPersonalDetail() {
       this.formData = await getPersonalDetail(this.userId) // 获取员工数据
+      if (this.formData.staffPhoto) {
+        this.$refs.picture.fileList = [
+          {
+            url: this.formData.staffPhoto
+          }
+        ]
+      }
     },
     async savePersonal() {
       await updatePersonal({ ...this.formData, id: this.userId })
@@ -377,6 +386,19 @@ export default {
     },
     async getUserDetailById() {
       this.userInfo = await getUserDetailById(this.userId)
+      // 这里是获取员工数据的地方, 绑定到表单上没问题
+      // 但是我们的上传组件有独立的 fileList 管理文件
+      // 如果获取回来的员工数据有头像地址, 应该赋值给上传组件回显
+      if (this.userInfo.staffPhoto) {
+        this.$refs.avatar.fileList = [
+          {
+            url: this.userInfo.staffPhoto
+          }
+        ]
+      }
+      console.log(this.userInfo)
+      console.log('上传祖母的图片数据')
+      console.log(this.$refs.avatar.fileList)
     }
   }
 }

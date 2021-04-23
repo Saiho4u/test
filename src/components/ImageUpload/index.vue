@@ -54,14 +54,7 @@ const cos = new COS({
 export default {
   data() {
     return {
-      fileList: [
-        // 这里是存放文件列表的地方
-        // 其中每张图片都是一个对象
-        // 最重要的属性 url
-        {
-          url: 'https://img1.baidu.com/it/u=145965533,3075282827&fm=26&fmt=auto&gp=0.jpg'
-        }
-      ],
+      fileList: [],
       showDialog: false,
       previewUrl: '',
       percentage: 0,
