@@ -15,6 +15,11 @@
         <el-table border :data="list">
           <el-table-column label="序号" sortable="" type="index" />
           <el-table-column label="姓名" sortable="" prop="username" />
+          <el-table-column label="头像" width="200">
+            <template slot-scope="scope">
+              <img :src="scope.row.staffPhoto" alt="" class="avatar">
+            </template>
+          </el-table-column>
           <el-table-column label="工号" sortable="" prop="workNumber" />
           <el-table-column label="聘用形式" sortable="" prop="formOfEmployment" :formatter="formatEmployment" />
           <el-table-column label="部门" sortable="" prop="departmentName" />
@@ -204,6 +209,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.avatar {
+  width: 100%;
+}
 </style>
