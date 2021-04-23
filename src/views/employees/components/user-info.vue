@@ -381,6 +381,27 @@ export default {
     },
     async saveUser() {
     //  调用父组件
+    //  因为 this.userInfo 只是默认的表单数据
+    //  而图片都是存在 上传组件 fileList 里面
+    //  要拿出来拼接一起发送
+      // 有三种情况
+      let url
+      const fileList = this.$refs.avatar.fileList
+
+      // 1. 没有图片
+      if (fileList.length === 0) {
+        url = ''
+      } else if (fileList[0].status !== 'success') {
+        // 2. 有图片但是没有上传完
+        this.$message.warning('请等待所有的图片上传完毕')
+        return
+      } else {
+        // 3. 有图片而且已经上传完毕
+        url = fileList[0].url
+      }
+
+      this.userInfo.staffPhoto = url
+
       await saveUserDetailById(this.userInfo)
       this.$message.success('保存成功')
     },
