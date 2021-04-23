@@ -41,6 +41,14 @@
 </template>
 
 <script>
+// 需要使用腾讯云的专用工具库上传图片
+// 先安装和引入
+import COS from 'cos-js-sdk-v5'
+// 创建工具库实例, 带上一个配置对象, 记录 验证身份的 id 和 key
+const cos = new COS({
+  SecretId: 'AKIDDE0YqFve2A7oF2M3VjhPGsviEYd9OmDO',
+  SecretKey: '5vthHjQwCE3dyBD0c0HI4jHbiZRSssQO'
+})
 export default {
   data() {
     return {
