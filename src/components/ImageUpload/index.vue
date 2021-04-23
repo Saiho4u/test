@@ -85,7 +85,7 @@ export default {
     },
     upload(data) {
       console.log(data)
-      // 上传文件
+      // 开始上传文件
       cos.putObject({
         // 储存桶名字
         Bucket: 'guangzhou60-1300310660',
@@ -101,12 +101,18 @@ export default {
         // onProgress: function(progressData) {
         //   console.log(JSON.stringify(progressData))
         // }
-      }, function(err, data) {
+      }, (err, data) => {
         console.log(err || data)
         if (!err) {
           // 上传成功
           console.log('上传成功')
           console.log(data)
+          // 这里是上传完毕的回调, 不确定什么时候执行
+          // 要将后续处理放在这
+          // 1. 将选中图片的 url 从本地图片换成线上地址
+          this.fileList[0].url = 'http://' + data.Location
+          // 2. 绿色成功小√显示出来
+          this.fileList[0].status = 'success'
         }
       })
     },
