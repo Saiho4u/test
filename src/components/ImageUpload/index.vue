@@ -34,7 +34,9 @@
       <i class="el-icon-plus" />
     </el-upload>
 
-    <el-dialog title="图兰" :visible="showDialog" @close="showDialog = false">
+    <el-progress v-if="showProgress" :percentage="percentage" style="width: 146px;" :show-text="false" />
+
+    <el-dialog title="预览" :visible="showDialog" @close="showDialog = false">
       <img :src="previewUrl" alt="">
     </el-dialog>
   </div>
@@ -61,7 +63,9 @@ export default {
         }
       ],
       showDialog: false,
-      previewUrl: ''
+      previewUrl: '',
+      percentage: 0,
+      showProgress: false
     }
   },
   methods: {
@@ -96,11 +100,12 @@ export default {
         // 储存类型, 固定写法
         StorageClass: 'STANDARD',
         // 文件本体
-        Body: data.file
+        Body: data.file,
         // 进度发生变化时的回调
-        // onProgress: function(progressData) {
-        //   console.log(JSON.stringify(progressData))
-        // }
+        onProgress: (progressData) => {
+          console.log(progressData)
+          this.percentage = progressData.percent * 100
+        }
       }, (err, data) => {
         console.log(err || data)
         if (!err) {
@@ -113,6 +118,10 @@ export default {
           this.fileList[0].url = 'http://' + data.Location
           // 2. 绿色成功小√显示出来
           this.fileList[0].status = 'success'
+
+          setTimeout(() => {
+            this.showProgress = false
+          }, 1000)
         }
       })
     },
@@ -132,11 +141,13 @@ export default {
       }
       // 2. 大小
       // 控制不能发送 200 k 以上的图片
-      const maxSize = 200 * 1024
+      const maxSize = 200 * 1024 * 1024
       if (file.size > maxSize) {
         this.$message.warning('图片大小不能超过 200 k')
         return false
       }
+
+      this.showProgress = true
 
       return true
     }
