@@ -89,7 +89,7 @@ export default {
         // 所在区域
         Region: 'ap-nanjing',
         // 要存在远程的文件名
-        Key: data.file.name,
+        Key: Date.now() + data.file.name,
         // 储存类型, 固定写法
         StorageClass: 'STANDARD',
         // 文件本体
