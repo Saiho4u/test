@@ -28,6 +28,8 @@
       :on-remove="onRemove"
       :on-change="onChange"
       :http-request="upload"
+
+      :before-upload="beforeUpload"
     >
       <i class="el-icon-plus" />
     </el-upload>
@@ -75,6 +77,30 @@ export default {
     },
     upload(data) {
       console.log(data)
+    },
+    beforeUpload(file) {
+      // 上传之前校验图片的函数
+      // 可以的到当前正在处理的图片本身
+      console.log('这是上传前的校验')
+      console.log(file)
+      // 进行校验, 如果认为上传文件不对
+      // 可以返回 false 进行主治
+
+      // 1. 类型
+      const type = ['image/jpeg', 'image/png']
+      if (!type.includes(file.type)) {
+        this.$message.warning('只接受 jpge / png 格式图片')
+        return false
+      }
+      // 2. 大小
+      // 控制不能发送 200 k 以上的图片
+      const maxSize = 200 * 1024
+      if (file.size > maxSize) {
+        this.$message.warning('图片大小不能超过 200 k')
+        return false
+      }
+
+      return true
     }
   }
 }
