@@ -17,7 +17,7 @@
           <el-table-column label="姓名" sortable="" prop="username" />
           <el-table-column label="头像" width="200">
             <template slot-scope="scope">
-              <img :src="scope.row.staffPhoto" alt="" class="avatar">
+              <img v-imgerror="require('@/assets/common/head.jpg')" :src="scope.row.staffPhoto" alt="" class="avatar">
             </template>
           </el-table-column>
           <el-table-column label="工号" sortable="" prop="workNumber" />
