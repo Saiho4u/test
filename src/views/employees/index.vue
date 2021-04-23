@@ -17,7 +17,7 @@
           <el-table-column label="姓名" sortable="" prop="username" />
           <el-table-column label="头像" width="200">
             <template slot-scope="scope">
-              <img v-imgerror="require('@/assets/common/head.jpg')" :src="scope.row.staffPhoto" alt="" class="avatar">
+              <img v-imgerror="require('@/assets/common/head.jpg')" :src="scope.row.staffPhoto" alt="" class="avatar" @click="showCode(scope.row.staffPhoto)">
             </template>
           </el-table-column>
           <el-table-column label="工号" sortable="" prop="workNumber" />
@@ -57,6 +57,14 @@
       </el-card>
 
       <AddEmployee :show-dialog.sync="showDialog" />
+
+      <el-dialog title="头像二维码" :visible="isShowCode">
+        <!-- <el-row type="flex" justify="center"> -->
+        <div class="canvasWrapper">
+          <canvas ref="myCanvas" />
+        </div>
+        <!-- </el-row> -->
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -71,6 +79,9 @@ import { formatDate } from '@/filters'
 // import * as excel from '@/vendor/Export2Excel'
 
 import AddEmployee from './components/add-employee'
+
+import QRCode from 'qrcode'
+
 export default {
 // 2. 注册
   components: {
@@ -85,7 +96,8 @@ export default {
         page: 1,
         size: 2
       },
-      showDialog: false
+      showDialog: false,
+      isShowCode: false
     }
   },
   created() {
@@ -204,6 +216,27 @@ export default {
       this.$message.success('删除成功')
       // 更新页面
       this.getEmployeeList()
+    },
+    showCode(url) {
+      if (url) {
+        this.isShowCode = true
+        // 在这里应该生成一个二维码
+        // 利用当前头像的 url
+        // 要等到渲染完, 弹窗出现后再生成二维码
+        // 1. 延时器 猜一个 100 毫秒
+        // setTimeout(() => {
+        //   QRCode.toCanvas(this.$refs.myCanvas, url)
+        // }, 100)
+        // 2. vue 提供的下次渲染完毕再执行回调的函数
+        this.$nextTick(() => {
+          QRCode.toCanvas(this.$refs.myCanvas, url, {
+            width: 300,
+            color: {
+              dark: '#66b1ff'
+            }
+          })
+        })
+      }
     }
   }
 }
@@ -212,5 +245,9 @@ export default {
 <style lang="scss" scoped>
 .avatar {
   width: 100%;
+}
+.canvasWrapper {
+  display: flex;
+  justify-content: center;
 }
 </style>
