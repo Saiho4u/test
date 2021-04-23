@@ -85,6 +85,30 @@ export default {
     },
     upload(data) {
       console.log(data)
+      // 上传文件
+      cos.putObject({
+        // 储存桶名字
+        Bucket: 'guangzhou60-1300310660',
+        // 所在区域
+        Region: 'ap-nanjing',
+        // 要存在远程的文件名
+        Key: data.file.name,
+        // 储存类型, 固定写法
+        StorageClass: 'STANDARD',
+        // 文件本体
+        Body: data.file
+        // 进度发生变化时的回调
+        // onProgress: function(progressData) {
+        //   console.log(JSON.stringify(progressData))
+        // }
+      }, function(err, data) {
+        console.log(err || data)
+        if (!err) {
+          // 上传成功
+          console.log('上传成功')
+          console.log(data)
+        }
+      })
     },
     beforeUpload(file) {
       // 上传之前校验图片的函数
