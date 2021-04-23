@@ -58,10 +58,11 @@
 
       <AddEmployee :show-dialog.sync="showDialog" />
 
-      <el-dialog title="头像二维码" :visible="isShowCode">
+      <el-dialog title="头像二维码" :visible="isShowCode" @close="isShowCode = false">
         <!-- <el-row type="flex" justify="center"> -->
         <div class="canvasWrapper">
           <canvas ref="myCanvas" />
+          <img :src="avatarUrl" alt="" class="codeCover">
         </div>
         <!-- </el-row> -->
       </el-dialog>
@@ -97,7 +98,8 @@ export default {
         size: 2
       },
       showDialog: false,
-      isShowCode: false
+      isShowCode: false,
+      avatarUrl: ''
     }
   },
   created() {
@@ -220,6 +222,7 @@ export default {
     showCode(url) {
       if (url) {
         this.isShowCode = true
+        this.avatarUrl = url
         // 在这里应该生成一个二维码
         // 利用当前头像的 url
         // 要等到渲染完, 弹窗出现后再生成二维码
@@ -245,9 +248,21 @@ export default {
 <style lang="scss" scoped>
 .avatar {
   width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 .canvasWrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+.codeCover {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    // 限定宽和高的情况下保持图片的比例
+    // object-fit: contain;
+    object-fit: cover;
 }
 </style>
