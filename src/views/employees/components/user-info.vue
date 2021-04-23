@@ -376,6 +376,23 @@ export default {
       }
     },
     async savePersonal() {
+      // 这里是第二个表单, 也需要在保存时处理图片的路径问题
+      // 1. 拿到数组
+      const fileList = this.$refs.picture.fileList
+      let url
+
+      // 2. 判断当前数组的数据情况
+      if (fileList.length === 0) {
+        url = ''
+      } else if (fileList[0].status !== 'success') {
+        this.$message.warning('请等待上传完毕')
+        return
+      } else {
+        url = fileList[0].url
+      }
+
+      this.formData.staffPhoto = url
+
       await updatePersonal({ ...this.formData, id: this.userId })
       this.$message.success('保存成功')
     },
