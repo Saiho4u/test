@@ -40,7 +40,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="assignRole(row.id)">角色</el-button>
               <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -57,6 +57,8 @@
       </el-card>
 
       <AddEmployee :show-dialog.sync="showDialog" />
+
+      <AssignRole :show-role-dialog="showRoleDialog" :user-id="userId" />
 
       <el-dialog title="头像二维码" :visible="isShowCode" @close="isShowCode = false">
         <!-- <el-row type="flex" justify="center"> -->
@@ -80,13 +82,15 @@ import { formatDate } from '@/filters'
 // import * as excel from '@/vendor/Export2Excel'
 
 import AddEmployee from './components/add-employee'
+import AssignRole from './components/assign-role'
 
 import QRCode from 'qrcode'
 
 export default {
 // 2. 注册
   components: {
-    AddEmployee
+    AddEmployee,
+    AssignRole
   },
   data() {
     return {
@@ -99,7 +103,10 @@ export default {
       },
       showDialog: false,
       isShowCode: false,
-      avatarUrl: ''
+      avatarUrl: '',
+      // 处理角色分配功能
+      showRoleDialog: false,
+      userId: ''
     }
   },
   created() {
@@ -240,6 +247,10 @@ export default {
           })
         })
       }
+    },
+    assignRole(id) {
+      this.showRoleDialog = true
+      this.userId = id
     }
   }
 }
