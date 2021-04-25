@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { getPermissionList } from '@/api/permission'
+import { getPermissionList, addPermission } from '@/api/permission'
 // 引入树形转换工具
 import { listToTreeData } from '@/utils'
 export default {
@@ -98,8 +98,31 @@ export default {
       console.log('列表转换后')
       console.log(this.permissionList)
     },
-    btnOK() {},
-    btnCancel() {},
+    async btnOK() {
+      // 校验
+      await this.$refs.perForm.validate()
+      // 发请求
+      await addPermission(this.formData)
+      // 更新页面
+      this.getPermissionList()
+      // 提示
+      this.$message.success('操作成功')
+      // 关闭弹窗
+      this.showDialog = false
+    },
+    btnCancel() {
+      // 清理表单
+      this.formData = {
+        name: '',
+        code: '',
+        description: '',
+        enVisible: '1'
+      }
+      // 清理校验
+      this.$refs.perForm.resetFields()
+      // 关闭弹窗
+      this.showDialog = false
+    },
     addPerm(type, pid) {
       // 由于表单只能填写四个参数
       // 另外两个 pid 和 type 都是点击时决定的
