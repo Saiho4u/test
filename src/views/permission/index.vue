@@ -30,7 +30,7 @@
           <el-form-item label="权限标识" prop="code">
             <el-input v-model="formData.code" style="width:90%" />
           </el-form-item>
-          <el-form-item label="权限描述">
+          <el-form-item label="权限描述" prop="description">
             <el-input v-model="formData.description" style="width:90%" />
           </el-form-item>
           <el-form-item label="开启">
@@ -69,7 +69,15 @@ export default {
         enVisible: '1'
       },
       rules: {
-
+        name: [
+          { required: true, message: '该项不能为空', trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '该项不能为空', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '该项不能为空', trigger: 'blur' }
+        ]
       }
     }
   },
