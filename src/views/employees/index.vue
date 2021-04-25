@@ -58,7 +58,7 @@
 
       <AddEmployee :show-dialog.sync="showDialog" />
 
-      <AssignRole ref="assignRole" :show-role-dialog="showRoleDialog" :user-id="userId" />
+      <AssignRole ref="assignRole" :show-role-dialog.sync="showRoleDialog" :user-id="userId" />
 
       <el-dialog title="头像二维码" :visible="isShowCode" @close="isShowCode = false">
         <!-- <el-row type="flex" justify="center"> -->
@@ -254,7 +254,7 @@ export default {
       // 2. 弹出弹窗
       this.showRoleDialog = true
       // 3. 将当前的点击 id 记录下来供后续使用
-      // this.userId = id
+      this.userId = id
     }
   }
 }
