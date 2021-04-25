@@ -15,7 +15,7 @@
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
             <el-button v-if="scope.row.type === 1" type="text" @click="addPerm(2, scope.row.id)">添加</el-button>
-            <el-button type="text">编辑</el-button>
+            <el-button type="text" @click="editPerm(scope.row.id)">编辑</el-button>
             <el-button type="text">删除</el-button>
           </template>
         </el-table-column>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { getPermissionList, addPermission } from '@/api/permission'
+import { getPermissionList, addPermission, getPermissionDetail, updatePermission } from '@/api/permission'
 // 引入树形转换工具
 import { listToTreeData } from '@/utils'
 export default {
@@ -102,7 +102,14 @@ export default {
       // 校验
       await this.$refs.perForm.validate()
       // 发请求
-      await addPermission(this.formData)
+      // 如果是编辑, 跟新增的接口不一样
+      if (this.formData.id) {
+        // 编辑
+        await updatePermission(this.formData)
+      } else {
+        // 新增
+        await addPermission(this.formData)
+      }
       // 更新页面
       this.getPermissionList()
       // 提示
@@ -129,6 +136,11 @@ export default {
       // 所以需要在弹窗时进行处理
       this.formData.type = type
       this.formData.pid = pid
+      this.showDialog = true
+    },
+    async editPerm(id) {
+      this.formData = await getPermissionDetail(id)
+      // 弹窗
       this.showDialog = true
     }
   }
