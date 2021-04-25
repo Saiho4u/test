@@ -24,6 +24,14 @@ export default {
       meta: {
         title: '详情页'
       }
+    },
+    {
+      path: 'print/:id',
+      component: () => import('@/views/employees/print.vue'),
+      hidden: true,
+      meta: {
+        title: '打印'
+      }
     }
   ]
 }
