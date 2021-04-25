@@ -17,6 +17,7 @@
 
 <script>
 import { getRoleList } from '@/api/setting'
+import { getUserDetailById } from '@/api/user'
 export default {
   props: {
     showRoleDialog: {
@@ -44,6 +45,10 @@ export default {
     async getRoleList() {
       const { rows } = await getRoleList()
       this.list = rows
+    },
+    async getUserDetailById(id) {
+      const { roleIds } = await getUserDetailById(id)
+      this.roleIds = roleIds
     }
   }
 }

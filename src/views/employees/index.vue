@@ -58,7 +58,7 @@
 
       <AddEmployee :show-dialog.sync="showDialog" />
 
-      <AssignRole :show-role-dialog="showRoleDialog" :user-id="userId" />
+      <AssignRole ref="assignRole" :show-role-dialog="showRoleDialog" :user-id="userId" />
 
       <el-dialog title="头像二维码" :visible="isShowCode" @close="isShowCode = false">
         <!-- <el-row type="flex" justify="center"> -->
@@ -248,9 +248,13 @@ export default {
         })
       }
     },
-    assignRole(id) {
+    async assignRole(id) {
+      // 1. 通知子组件获取这个员工的已有角色进行渲染
+      await this.$refs.assignRole.getUserDetailById(id)
+      // 2. 弹出弹窗
       this.showRoleDialog = true
-      this.userId = id
+      // 3. 将当前的点击 id 记录下来供后续使用
+      // this.userId = id
     }
   }
 }
