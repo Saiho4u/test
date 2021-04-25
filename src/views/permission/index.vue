@@ -16,7 +16,7 @@
           <template slot-scope="scope">
             <el-button v-if="scope.row.type === 1" type="text" @click="addPerm(2, scope.row.id)">添加</el-button>
             <el-button type="text" @click="editPerm(scope.row.id)">编辑</el-button>
-            <el-button type="text">删除</el-button>
+            <el-button type="text" @click="delPerm(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { getPermissionList, addPermission, getPermissionDetail, updatePermission } from '@/api/permission'
+import { getPermissionList, addPermission, getPermissionDetail, updatePermission, delPermission } from '@/api/permission'
 // 引入树形转换工具
 import { listToTreeData } from '@/utils'
 export default {
@@ -142,6 +142,16 @@ export default {
       this.formData = await getPermissionDetail(id)
       // 弹窗
       this.showDialog = true
+    },
+    async delPerm(id) {
+      // 二次确认
+      await this.$confirm('确认删除该权限?')
+      // 发请求
+      await delPermission(id)
+      // 更新页面
+      this.getPermissionList()
+      // 提醒
+      this.$message.success('删除成功')
     }
   }
 }
