@@ -9,6 +9,9 @@
           </el-breadcrumb-item>
           <el-breadcrumb-item>打印</el-breadcrumb-item>
         </el-breadcrumb>
+        <el-row type="flex" justify="end">
+          <el-button @click="startPrint">开始打印</el-button>
+        </el-row>
         <div v-if="type === 'personal'">
           <h2 class="centInfo">员工信息表</h2>
           <table cellspacing="0" width="100%" class="tableList">
@@ -351,6 +354,9 @@ export default {
       const userInfo = await getUserDetailById(this.userId)
       const jobInfo = await getJobDetail(this.userId) // 获取个人基本信息
       this.formData = { ...userInfo, ...jobInfo }
+    },
+    startPrint() {
+      print()
     }
   }
 }
@@ -360,5 +366,14 @@ export default {
 .foot {
   padding: 30px 0;
   text-align: right;
+}
+@media print {
+  .sidebar-container,
+  .navbar {
+    display: none;
+  }
+  #app .main-container {
+    margin-left: 0;
+  }
 }
 </style>
