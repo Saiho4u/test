@@ -93,15 +93,22 @@
         <!-- check-strictly 如果为true 那表示父子勾选时  不互相关联 如果为false就互相关联 -->
         <!-- id作为唯一标识 -->
         <!-- <el-tree
-          ref="permTree"
-          :data="permData"
-          :props="defaultProps"
-          :show-checkbox="true"
-          :check-strictly="true"
-          :default-expand-all="true"
           :default-checked-keys="selectCheck"
           node-key="id"
         /> -->
+        <el-tree
+          ref="permTree"
+
+          :data="permList"
+          :props="{label: 'name'}"
+
+          :default-expand-all="true"
+          :show-checkbox="true"
+
+          :check-strictly="true"
+
+          node-key="id"
+        />
         <!-- 确定 取消 -->
         <el-row slot="footer" type="flex" justify="center">
           <el-col :span="6">
@@ -117,6 +124,8 @@
 <script>
 import { getCompanyInfo, getRoleList, deleteRole, getRoleDetail, updateRole, addRole } from '@/api/setting'
 import { mapGetters } from 'vuex'
+import { getPermissionList } from '@/api/permission'
+import { listToTreeData } from '@/utils'
 export default {
   data() {
     return {
@@ -150,7 +159,10 @@ export default {
       },
       // 权限弹窗的数据
       showPermDialog: false,
-      roleId: ''
+      roleId: '',
+      permList: []
+      // 被选中的 key (这里已经设定过以 id 作为 key)
+      // selectCheck: []
 
     }
   },
@@ -241,13 +253,32 @@ export default {
       this.showDialog = false
     },
     btnPermOK() {},
-    btnPermCancel() {},
-    assignPerm(id) {
+    btnPermCancel() {
+      this.$refs.permTree.setCheckedKeys([])
+      this.showPermDialog = false
+    },
+    async assignPerm(id) {
+      // 弹窗显示的数据两部分组成所有的权限列表+当前角色拥有的权限
+      // 全部权限
+      this.permList = listToTreeData(await getPermissionList(), '0')
+      // 当前角色权限
+      const { permIds } = await getRoleDetail(id)
+      // this.selectCheck = permIds
+      // 不在设定 selectCheck
+      // 而是通过饿了么的方法设置那个节点应该被选中
+
+      // setTimeout(() => {
+      //   this.$refs.permTree.setCheckedKeys(permIds)
+      // }, 200)
       // 接收点击的 id 有两个地方用到
       // 1.获取旧数据
       // 2. 暂存待会编辑的时候发请求要用
       this.roleId = id
       this.showPermDialog = true
+
+      this.$nextTick(() => {
+        this.$refs.permTree.setCheckedKeys(permIds)
+      })
     }
   }
 }
