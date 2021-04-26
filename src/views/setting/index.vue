@@ -96,6 +96,13 @@
           :default-checked-keys="selectCheck"
           node-key="id"
         /> -->
+        <!--
+          这里这么复杂全部都是属性组件原因
+        以前的操作也是
+        1. 弹窗
+        2. 回显数据 没有绑定v-model="xxx" 只能使用 setCheeckedKeys 设定
+        3. 发送修改请求 也拿不到 api(xxx) 只能还是用 饿了么进行获取 getCheckedKeys
+        -->
         <el-tree
           ref="permTree"
 
@@ -122,7 +129,7 @@
 </template>
 
 <script>
-import { getCompanyInfo, getRoleList, deleteRole, getRoleDetail, updateRole, addRole } from '@/api/setting'
+import { getCompanyInfo, getRoleList, deleteRole, getRoleDetail, updateRole, addRole, assignPerm } from '@/api/setting'
 import { mapGetters } from 'vuex'
 import { getPermissionList } from '@/api/permission'
 import { listToTreeData } from '@/utils'
@@ -252,7 +259,19 @@ export default {
       // 关闭弹窗
       this.showDialog = false
     },
-    btnPermOK() {},
+    async btnPermOK() {
+      // 校验表单不需要
+      // 发请求
+      await assignPerm({
+        id: this.roleId,
+        permIds: this.$refs.permTree.getCheckedKeys()
+      })
+      // 提示用户
+      this.$message.success('操作成功')
+      // 加载数据不需要
+      // 关闭弹窗
+      this.btnPermCancel()
+    },
     btnPermCancel() {
       this.$refs.permTree.setCheckedKeys([])
       this.showPermDialog = false
