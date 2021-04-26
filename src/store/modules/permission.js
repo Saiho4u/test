@@ -13,6 +13,7 @@ const actions = {
     const routes = asyncRoutes.filter(route => menus.includes(route.name))
     console.log('这里是筛选结果')
     console.log(routes)
+    return routes
   }
 }
 

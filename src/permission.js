@@ -29,10 +29,15 @@ router.beforeEach(async(to, from, next) => {
         console.log('这里是导航守卫')
         console.log('拿完用户数据, 顺便 return , 这里可以接受接着使用')
         console.log(res)
-        store.dispatch('permission/filterRoutes', res.roles.menus)
-      }
+        // 现在将动态路由从路由配置中删除掉了
+        // 这里筛选完有权限的页面配置, 应该重新加到 路由配置中
+        const routes = await store.dispatch('permission/filterRoutes', res.roles.menus)
 
-      next()
+        router.addRoutes(routes)
+        next(to.path)
+      } else {
+        next()
+      }
     }
   } else {
     // 没有 token
