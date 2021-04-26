@@ -33,7 +33,20 @@ router.beforeEach(async(to, from, next) => {
         // 这里筛选完有权限的页面配置, 应该重新加到 路由配置中
         const routes = await store.dispatch('permission/filterRoutes', res.roles.menus)
 
-        router.addRoutes(routes)
+        // [
+        //   {}
+        //   {}
+        //   {}
+        //   {}
+        //   { path: '*', redirect: '/404', hidden: true }
+        // ]
+
+        router.addRoutes([
+          // 动态路由添加完毕, 再加上一个 * 跳转404 进行保底
+          ...routes,
+          { path: '*', redirect: '/404', hidden: true }
+        ])
+
         next(to.path)
       } else {
         next()

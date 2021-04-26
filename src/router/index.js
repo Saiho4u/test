@@ -74,10 +74,13 @@ export const constantRoutes = [
       path: '',
       component: () => import('@/views/import')
     }]
-  },
+  }
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // 这里是静态路由, 页面进来时由于动态路由没有添加
+  // 就被这里拦截直接跳到404
+  // 这个逻辑应该挪到动态路由添加完毕之后再执行
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 // 引入多个模块的规则
