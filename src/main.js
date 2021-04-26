@@ -78,6 +78,10 @@ for (const key in filters) {
   Vue.filter(key, filters[key])
 }
 
+// 演示混入技术
+import mixin from '@/mixin'
+Vue.mixin(mixin)
+
 new Vue({
   el: '#app',
   router,

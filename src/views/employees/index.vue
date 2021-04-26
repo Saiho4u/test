@@ -255,12 +255,12 @@ export default {
       this.showRoleDialog = true
       // 3. 将当前的点击 id 记录下来供后续使用
       this.userId = id
-    },
-    checkPerm(name) {
-      // 检查这个按钮 name 是否存在于权限 points 数组中
-      const points = this.$store.state.user.userInfo.roles.points
-      return points.includes(name)
     }
+    // checkPerm(name) {
+    //   // 检查这个按钮 name 是否存在于权限 points 数组中
+    //   const points = this.$store.state.user.userInfo.roles.points
+    //   return points.includes(name)
+    // }
   }
 }
 </script>
