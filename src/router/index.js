@@ -90,7 +90,7 @@ import salarysRouter from './modules/salarys'
 import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
 
-const asyncRoutes = [
+export const asyncRoutes = [
   approvalsRouter,
   departmentsRouter,
   employeesRouter,
