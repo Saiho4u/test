@@ -1,5 +1,6 @@
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
+import { resetRouter } from '@/router'
 const state = {
   token: getToken(),
   userInfo: {}
@@ -53,6 +54,7 @@ const actions = {
     return data
   },
   logout(store) {
+    resetRouter()
     store.commit('removeToken')
     store.commit('removeUserInfo')
   }
