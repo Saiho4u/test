@@ -50,7 +50,7 @@ const actions = {
     // 2. 调用 Mutations 存在 state 里面
     store.commit('setUserInfo', data)
 
-    // return res
+    return data
   },
   logout(store) {
     store.commit('removeToken')
