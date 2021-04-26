@@ -22,7 +22,7 @@
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
                 <template slot-scope="scope">
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button size="small" type="success" @click="assignPerm(scope.row.id)">分配权限</el-button>
                   <el-button size="small" type="primary" @click="editRole(scope.row.id)">编辑</el-button>
                   <el-button size="small" type="danger" @click="deleteRole(scope.row.id)">删除</el-button>
                 </template>
@@ -86,6 +86,30 @@
           </el-col>
         </el-row>
       </el-dialog>
+
+      <el-dialog title="分配权限" :visible="showPermDialog" @close="btnPermCancel">
+        <!-- 权限是一颗树 -->
+        <!-- 将数据绑定到组件上 -->
+        <!-- check-strictly 如果为true 那表示父子勾选时  不互相关联 如果为false就互相关联 -->
+        <!-- id作为唯一标识 -->
+        <!-- <el-tree
+          ref="permTree"
+          :data="permData"
+          :props="defaultProps"
+          :show-checkbox="true"
+          :check-strictly="true"
+          :default-expand-all="true"
+          :default-checked-keys="selectCheck"
+          node-key="id"
+        /> -->
+        <!-- 确定 取消 -->
+        <el-row slot="footer" type="flex" justify="center">
+          <el-col :span="6">
+            <el-button type="primary" size="small" @click="btnPermOK">确定</el-button>
+            <el-button size="small" @click="btnPermCancel">取消</el-button>
+          </el-col>
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -123,7 +147,11 @@ export default {
         description: [
           { required: true, message: '数据不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      // 权限弹窗的数据
+      showPermDialog: false,
+      roleId: ''
+
     }
   },
   computed: {
@@ -211,6 +239,15 @@ export default {
       this.getRoleList()
       // 关闭弹窗
       this.showDialog = false
+    },
+    btnPermOK() {},
+    btnPermCancel() {},
+    assignPerm(id) {
+      // 接收点击的 id 有两个地方用到
+      // 1.获取旧数据
+      // 2. 暂存待会编辑的时候发请求要用
+      this.roleId = id
+      this.showPermDialog = true
     }
   }
 }
