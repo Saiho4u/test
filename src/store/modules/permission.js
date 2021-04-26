@@ -1,7 +1,15 @@
-const state = {}
+import { constantRoutes } from '@/router'
+const state = {
+  routes: []
+}
 
 import { asyncRoutes } from '@/router'
-const mutations = {}
+
+const mutations = {
+  setRoutes(state, data) {
+    state.routes = [...constantRoutes, ...data]
+  }
+}
 
 const actions = {
   filterRoutes(store, menus) {
@@ -13,6 +21,9 @@ const actions = {
     const routes = asyncRoutes.filter(route => menus.includes(route.name))
     console.log('这里是筛选结果')
     console.log(routes)
+    // 利用 mutations 存放当前筛选的数据
+    // 供菜单使用
+    store.commit('setRoutes', routes)
     return routes
   }
 }

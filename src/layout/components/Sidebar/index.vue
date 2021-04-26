@@ -31,7 +31,12 @@ export default {
       'sidebar'
     ]),
     routes() {
-      return this.$router.options.routes
+      // 这里原来只是遍历路由原始配置
+      // 现在路由的原始配置已经砍掉了动态部分
+      // 需要自己拼接
+      // return this.$router.options.routes
+      // return this.$store.state.permission.routes
+      return this.$store.getters.routes
     },
     activeMenu() {
       const route = this.$route
