@@ -259,24 +259,20 @@ export default {
     },
     async assignPerm(id) {
       // 弹窗显示的数据两部分组成所有的权限列表+当前角色拥有的权限
+
       // 全部权限
       this.permList = listToTreeData(await getPermissionList(), '0')
       // 当前角色权限
       const { permIds } = await getRoleDetail(id)
-      // this.selectCheck = permIds
-      // 不在设定 selectCheck
-      // 而是通过饿了么的方法设置那个节点应该被选中
 
-      // setTimeout(() => {
-      //   this.$refs.permTree.setCheckedKeys(permIds)
-      // }, 200)
-      // 接收点击的 id 有两个地方用到
-      // 1.获取旧数据
-      // 2. 暂存待会编辑的时候发请求要用
+      // 记录点击的 id
       this.roleId = id
+      // 设定弹窗的显示
       this.showPermDialog = true
 
       this.$nextTick(() => {
+        // 等待上面的内容都渲染完毕之后
+        // 将拿回来的当前角色权限数据设置到 属性选中值当中
         this.$refs.permTree.setCheckedKeys(permIds)
       })
     }
