@@ -23,7 +23,13 @@ router.beforeEach(async(to, from, next) => {
       // 没有数据的情况下,再发请求, 如果是页面之间的跳转
       // 之前已经有数据就不必再次发送了
       if (!store.state.user.userInfo.userId) {
-        await store.dispatch('user/getUserInfo')
+        const res = await store.dispatch('user/getUserInfo')
+        // 这里是获取数据的地方, 只有获取完数据, 又还没有 next
+        // 这个事件点应该过滤路由
+        console.log('这里是导航守卫')
+        console.log('拿完用户数据, 顺便 return , 这里可以接受接着使用')
+        console.log(res)
+        store.dispatch('permission/filterRoutes', res.roles.menus)
       }
 
       next()
