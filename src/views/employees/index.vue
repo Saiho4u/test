@@ -7,7 +7,7 @@
         <template slot="after">
           <el-button size="small" type="warning" @click="$router.push('/import')">导入</el-button>
           <el-button size="small" type="danger" @click="export2Excel">导出</el-button>
-          <el-button size="small" type="primary" @click="showDialog = true">新增员工</el-button>
+          <el-button :disoabled="!checkPerm('addEmplyee')" size="small" type="primary" @click="showDialog = true">新增员工</el-button>
         </template>
       </page-tools>
       <!-- 页面主要内容 -->
@@ -255,6 +255,11 @@ export default {
       this.showRoleDialog = true
       // 3. 将当前的点击 id 记录下来供后续使用
       this.userId = id
+    },
+    checkPerm(name) {
+      // 检查这个按钮 name 是否存在于权限 points 数组中
+      const points = this.$store.state.user.userInfo.roles.points
+      return points.includes(name)
     }
   }
 }
