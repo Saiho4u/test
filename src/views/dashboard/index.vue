@@ -167,6 +167,8 @@ import { mapGetters } from 'vuex'
 import WorkCalendar from './components/work-calendar'
 import Radar from './components/radar'
 
+import { startProcess } from '@/api/approvals'
+
 export default {
   name: 'Dashboard',
   components: {
@@ -197,13 +199,30 @@ export default {
     }
   },
   methods: {
-    btnOK() {
+    async btnOK() {
       // 表单验证
+      await this.$refs.ruleForm.validate()
       // 发请求
+      const data = { ...this.ruleForm, userId: this.userInfo.userId }
+      await startProcess(data)
       // 提示用户
+      this.$message.success('提交成功')
       // 关闭弹窗
+      this.showDialog = false
     },
-    btnCancel() {}
+    btnCancel() {
+      // 1. 清空表单
+      this.ruleForm = {
+        exceptTime: '',
+        reason: '',
+        processKey: 'process_dimission', // 特定的审批
+        processName: '离职'
+      }
+      // 2. 清空校验数据
+      this.$refs.ruleForm.resetFields()
+      // 3. 关闭弹窗
+      this.showDialog = false
+    }
   }
   // mounted() {
   //   this.$store.dispatch('user/getUserInfo')
