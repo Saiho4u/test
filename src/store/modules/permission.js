@@ -1,9 +1,7 @@
-import { constantRoutes } from '@/router'
+import { constantRoutes, asyncRoutes } from '@/router'
 const state = {
   routes: []
 }
-
-import { asyncRoutes } from '@/router'
 
 const mutations = {
   setRoutes(state, data) {
