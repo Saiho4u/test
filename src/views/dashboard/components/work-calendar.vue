@@ -42,7 +42,12 @@ export default {
   },
   methods: {
     dateChange() {
-
+      // 这个地方是下拉菜单触发的函数
+      // 每当切换年或者月的时候
+      // 重新获取日期渲染到日历上 currentDate
+      const year = this.currentYear
+      const month = this.currentMonth
+      this.currentDate = new Date(`${year}-${month}-1`)
     }
   }
 }
