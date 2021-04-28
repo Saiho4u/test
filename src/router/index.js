@@ -30,7 +30,9 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+import userRoute from './modules/user'
 export const constantRoutes = [
+  userRoute,
   {
     path: '/login',
     component: () => import('@/views/login/index'),
