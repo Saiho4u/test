@@ -15,6 +15,21 @@ const name = defaultSettings.title || 'vue Admin Template' // page title
 // port = 9528 npm run dev OR npm run dev --port = 9528
 const port = process.env.port || process.env.npm_config_port || 9528 // dev port
 
+const cdn = {
+  css: [
+    // element-ui css
+    'https://unpkg.com/element-ui/lib/theme-chalk/index.css' // 样式表
+  ],
+  js: [
+    // vue must at first!
+    'https://unpkg.com/vue/dist/vue.js', // vuejs
+    // element-ui js
+    'https://unpkg.com/element-ui/lib/index.js', // elementUI
+    'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/jszip.min.js',
+    'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/xlsx.full.min.js'
+  ]
+}
+
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
@@ -41,7 +56,9 @@ module.exports = {
       // 以 key: value 的形式指定
       // 辨认api接口的模式: 转发的目的地
       '/api': {
-        target: 'http://ihrm-java.itheima.net',
+        // target: 'http://ihrm-java.itheima.net',
+        target: 'http://localhost:3000',
+        // target: 'http://192.168.84.27:3000',
         changeOrigin: true
       }
     }
@@ -54,9 +71,24 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
+    },
+    externals: {
+      // 因为这个地方排除在外的库
+      // 最终都是以 script src 的方式从 cdn 网络下载都会提供一个全局变量
+      // 类似引入 jQuery 提供的 $ 一样
+      // 这里以 key: value 的方式指定, 需要排除的库名, 和最终替换这些库的变量名
+      'vue': 'Vue',
+      'element-ui': 'ELEMENT',
+      'xlsx': 'XLSX'
     }
   },
   chainWebpack(config) {
+    // 生成文件时, 将上面创建哪些css/js 的数组作为数据传入
+    config.plugin('html').tap(args => {
+      args[0].cdn = cdn
+      return args
+    })
+
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('preload').tap(() => [
       {
