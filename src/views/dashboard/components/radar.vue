@@ -6,7 +6,10 @@
 
 <script>
 // 1. 引入库
-import * as echarts from 'echarts'
+// import * as echarts from 'echarts'
+
+var echarts = require('echarts/lib/echarts') // 引入echarts主模块
+require('echarts/lib/chart/radar') // 引入雷达图
 
 export default {
   // 由于需要处理 dom
