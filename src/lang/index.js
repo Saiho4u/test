@@ -1,6 +1,7 @@
 import Vue from 'vue'
 // 1. 安装引入
 import VueI18n from 'vue-i18n'
+import Cookie from 'js-cookie'
 // 2. Vue.use 注册
 Vue.use(VueI18n)
 
@@ -15,7 +16,8 @@ import customEN from './en'
 // 3. 创建实例
 export default new VueI18n({
   // 当前语言设定
-  locale: 'en',
+  // 引入 Cookies 如果有旧数据就恢复, 没有的话就默认值
+  locale: Cookie.get('language') || 'zh',
   // 字典
   messages: {
     zh: {

@@ -12,11 +12,11 @@
 </template>
 
 <script>
-// import Cookie from 'js-cookie'
+import Cookie from 'js-cookie'
 export default {
   methods: {
     changeLanguage(lang) {
-      // Cookie.set('language', lang) // 切换多语言
+      Cookie.set('language', lang) // 切换多语言
       this.$i18n.locale = lang // 设置给本地的i18n插件
       this.$message.success('切换多语言成功')
     }
