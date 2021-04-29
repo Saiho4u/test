@@ -8,6 +8,10 @@ Vue.use(VueI18n)
 import elementZH from 'element-ui/lib/locale/lang/zh-CN'
 import elementEN from 'element-ui/lib/locale/lang/en'
 
+// 引入菜单翻译包
+import customZH from './zh'
+import customEN from './en'
+
 // 3. 创建实例
 export default new VueI18n({
   // 当前语言设定
@@ -17,12 +21,14 @@ export default new VueI18n({
     zh: {
       hi: '你好',
       goodday: '祝你开心每一天',
-      ...elementZH
+      ...elementZH,
+      ...customZH
     },
     en: {
       hi: 'Hello',
       goodday: 'Have a good day',
-      ...elementEN
+      ...elementEN,
+      ...customEN
     }
   }
 })
