@@ -12,6 +12,9 @@ import App from './App'
 import store from './store'
 import router from './router'
 
+// 引入 i18n
+import i18n from '@/lang'
+
 import '@/icons' // icon
 import '@/permission' // permission control
 
@@ -84,6 +87,8 @@ Vue.mixin(mixin)
 
 new Vue({
   el: '#app',
+  // 4. 挂载到 Vue 实例当中
+  i18n,
   router,
   store,
   render: h => h(App)
